@@ -62,7 +62,9 @@ public class MedianOfTwoSortedArrays {
         int m = nums1.length;
         int n = nums2.length;
         if ((m+n)%2 == 0) { // find kth, starting from 1
-            median = (findKth(nums1,0,nums2,0,(m+n)/2) + findKth(nums1,0,nums2,0,(m+n)/2+1)) / 2.0;
+            int a = findKth(nums1,0,nums2,0,(m+n)/2);
+            int b = findKth(nums1,0,nums2,0,(m+n)/2+1);
+            median = (a + b) / 2.0;
         } else {
             median = findKth(nums1,0,nums2,0,(m+n)/2+1);
         }
@@ -71,6 +73,10 @@ public class MedianOfTwoSortedArrays {
     }
 
     private static int findKth(int[] nums1, int start1,int[] nums2, int start2, int k) {
+
+        //always assume that m is equal or smaller than n
+        /*if (nums1.length > nums2.length)
+            return findKth(nums2, start2, nums1, start1, k);*/
 
         // if nums1 runs out, find the kth number in nums2 from start point 2.
         // likewise if nums2 runs out.
@@ -85,17 +91,19 @@ public class MedianOfTwoSortedArrays {
             return Math.min(nums1[start1], nums2[start2]);
         }
 
+        int a = Math.min(start1 + k/2, nums1.length);
+        int b = Math.min(start2 + k/2, nums2.length);
         // divide by half and keep finding kth/2
-        if (nums1[start1 + k/2 - 1] < nums2[start2 + k/2 - 1]) {
-            return findKth(nums1,start1+k/2, nums2,start2,k-k/2); // note that it is k-k/2, not k/2
+        if (nums1[a - 1] < nums2[b - 1]) {
+            return findKth(nums1,a, nums2,start2, k-a+start1);
         } else {
-            return findKth(nums1,start1,nums2,start2+k/2, k-k/2);
+            return findKth(nums1,start1,nums2,b, k-b+start2);
         }
     }
 
     public static void main(String[] args) {
-        //int[] nums1 = new int[]{1,3};
-        //int[] nums2 = new int[]{2,4};
+        //int[] nums1 = new int[]{1,2};
+        //int[] nums2 = new int[]{3,4};
 
         int[] nums1 = new int[]{1};
         int[] nums2 = new int[]{2,3,4,5,6};
