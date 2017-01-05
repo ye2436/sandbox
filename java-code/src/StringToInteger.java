@@ -15,9 +15,8 @@ public class StringToInteger {
         }
         str = str.trim();
 
-        int n = 0;
-
-        boolean minus;
+        long n = 0;
+        boolean minus = false;
         for (int i=0; i<str.length(); i++) {
             char c = str.charAt(i);
             if (i==0) {
@@ -25,17 +24,70 @@ public class StringToInteger {
                     continue;
                 } else if (c == '-') {
                     minus = true;
+                    continue;
                 }
             }
             if (c < '0'|| c > '9') {
-                return 0;
+                break;
+            }
+
+            n = n * 10 + (c-'0');
+            if (n > Integer.MAX_VALUE) {
+                break;
             }
 
         }
-        return n;
+        if (minus) {
+            if (-n <= Integer.MIN_VALUE) {
+                return Integer.MIN_VALUE;
+            }
+            return (int)-n;
+        }
+        if (n >= Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        return (int)n;
+    }
+
+    public static int my2(String str) {
+        if(str == null) {
+            return 0;
+        }
+        str = str.trim();
+        if (str.length() == 0) {
+            return 0;
+        }
+
+        int sign = 1;
+        int index = 0;
+
+        if (str.charAt(index) == '+') {
+            index++;
+        } else if (str.charAt(index) == '-') {
+            sign = -1;
+            index++;
+        }
+        long num = 0;
+        for (; index < str.length(); index++) {
+            if (str.charAt(index) < '0' || str.charAt(index) > '9')
+                break;
+            num = num * 10 + (str.charAt(index) - '0');
+            if (num > Integer.MAX_VALUE ) {
+                break;
+            }
+        }
+        if (num * sign >= Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        if (num * sign <= Integer.MIN_VALUE) {
+            return Integer.MIN_VALUE;
+        }
+        return (int)num * sign;
     }
 
     public static void main(String[] args) {
-        System.out.println(myAtoi(""));
+        System.out.println(myAtoi("2147483648"));
+
+        //System.out.println(my2("2147483648"));
     }
 }
