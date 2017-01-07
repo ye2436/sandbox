@@ -106,9 +106,9 @@ public class RegularExpressionMatching {
                 if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') { // 1&2
                     dp[i+1][j+1] = dp[i][j];
                 }
-                if (p.charAt(j) != '*') {
-                    if (p.charAt(j) == s.charAt(i) || p.charAt(j) == '.') { // 3.2
-                        dp[i+1][j+1] = dp[i][j+1] || dp[i][j-1] || dp[i][j-2];
+                if (p.charAt(j) == '*') {
+                    if (p.charAt(j-1) == s.charAt(i) || p.charAt(j-1) == '.') { // 3.2
+                        dp[i+1][j+1] = dp[i][j+1] || dp[i+1][j] || dp[i+1][j-1];
                     } else { // 3.1
                         dp[i+1][j+1] = dp[i+1][j-1];
                     }
@@ -125,8 +125,8 @@ public class RegularExpressionMatching {
         System.out.println(isMatch("aaa","a*a"));
         System.out.println(isMatch("aaabc","a*.c"));
 
-
-        System.out.println(isMatch("abcd","d*"));
+        System.out.println(isMatch_2("aa",".*"));
+        System.out.println(isMatch_2("abcd","d*"));
 
 
         System.out.println(isMatch("aab","c*a*b"));
