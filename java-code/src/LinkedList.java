@@ -28,6 +28,23 @@ public class LinkedList {
         return tail;
     }
 
+    public static ListNode reverse(ListNode head) {
+        ListNode temp = new ListNode(0);
+        temp.next = head;
+
+        ListNode first = temp.next;
+        ListNode last = temp.next;
+        while (last.next != null) {
+            ListNode next = last.next;
+            temp.next = next;
+            last.next = next.next;
+            next.next = first;
+            first = next;
+        }
+
+        return temp.next;
+    }
+
 
     public static class ListNode {
         int val;
