@@ -8,10 +8,22 @@
  */
 public class RemoveDuplicatesFromSortedArray {
     public static int removeDuplicates(int[] nums) {
-        return 0;
+        if (nums==null || nums.length<1) return 0;
+
+        int max = nums[0];
+        int p = 0; // pointer
+        for (int i=1; i<nums.length; i++) {
+            if (nums[i] > max) {
+                //p++;
+                nums[++p] = nums[i];
+                max = nums[i];
+            }
+        }
+        return p+1;
     }
 
     public static void main(String[] args) {
-        System.out.println(removeDuplicates(new int[]{1,1,2}));
+        int[] nums = new int[]{1,1,2};
+        System.out.println(removeDuplicates(nums));
     }
 }
