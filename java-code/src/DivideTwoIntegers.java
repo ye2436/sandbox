@@ -3,6 +3,31 @@
  * If it is overflow, return MAX_INT.
  */
 public class DivideTwoIntegers {
+    public static int divide_2(int dividend, int divisor) {
+        //if (dividend == 0) return 0;
+        if (divisor == 0) return Integer.MAX_VALUE;
+        if (divisor == -1 && dividend == Integer.MIN_VALUE) return Integer.MAX_VALUE;
+
+        long pDividend = Math.abs((long)dividend);
+        long pDivisor = Math.abs((long)divisor);
+
+        int result = 0;
+        while (pDividend >= pDivisor) { // if dividend < divisor, return 0
+            int numShifts = 0;
+            while (pDividend >= (pDivisor<<numShifts)) {
+                numShifts++;
+            }
+            result += 1 << (numShifts-1); // 2的(numShifts-1)次方
+            System.out.println("# of shifts: " + (numShifts-1) + ", result: " + result);
+            pDividend -= pDivisor<<(numShifts-1);
+        }
+
+        if ((dividend > 0) == (divisor > 0)) {
+            return result;
+        }
+        return -result;
+    }
+
     public static int divide(int dividend, int divisor) {
         if (divisor == 0) return Integer.MAX_VALUE;
         if (dividend == 0) return 0;
@@ -48,6 +73,6 @@ public class DivideTwoIntegers {
     }
 
     public static void main(String[] args) {
-        System.out.println(divide(-16,4));
+        System.out.println(divide_2(37,5));
     }
 }
