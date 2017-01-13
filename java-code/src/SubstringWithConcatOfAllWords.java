@@ -27,8 +27,11 @@ public class SubstringWithConcatOfAllWords {
         return results;
     }
 
-    public static void containsWord(int start) {
+    public static void containsWord(String s, int start, String[] words) {
+        int m = words[0].length();
+        for (int i=0; i<m; i++) {
 
+        }
     }
 
     public static void main(String[] args) {
