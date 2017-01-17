@@ -14,22 +14,17 @@ public class LongestValidParentheses {
         if (s==null || len< 2) return max;
 
         Stack<Integer> stack = new Stack(); // record unmatched paren's index
-
         for (int i=0; i<len; i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);
-            } else {
-                // check if stack's top is (
-                if (!stack.isEmpty() && s.charAt(stack.peek()) == '(') {
-                    stack.pop();
-                    if (stack.isEmpty()) { // meaning - everything between 0 and i are valid parentheses
-                        max = i+1;
-                    } else { // meaning - everything between stack.peek() and i are valid
-                        max = Math.max(max, i-stack.peek()); // i+1-stack.peek-1
-                    }
-                } else {
-                    stack.push(i);
+            // check if stack's top is (
+            if (s.charAt(i) == ')' && !stack.isEmpty() && s.charAt(stack.peek()) == '(') {
+                stack.pop();
+                if (stack.isEmpty()) { // meaning - everything between 0 and i are valid parentheses
+                    max = i+1;
+                } else { // meaning - everything between stack.peek() and i are valid
+                    max = Math.max(max, i-stack.peek()); // i+1-stack.peek-1
                 }
+            } else { // current char is ( or current char is ) but the stack's top is not (
+                stack.push(i);
             }
         }
 
@@ -43,14 +38,13 @@ public class LongestValidParentheses {
         if (s==null || len< 2) return max;
 
         int[] dp = new int[len]; // records the length of the longest parentheses starting from position i
-        for (int i=len-1; i>=0; i--) {
+        for (int i=len-2; i>=0; i--) {
             if (s.charAt(i) == ')') {
                 dp[i] = 0;
             } else {
-                if (i+1<len && s.charAt(i+dp[i+1]+1) == ')') {
+                int end = i+dp[i+1]+1;
+                if (end<len && s.charAt(end) == ')') {
                     dp[i] = dp[i+1]+2;
-
-                    int end = i+dp[i+1]+1;
                     if (end+1 < len) { // after adding ), check if there is trailing valid paretheses
                         dp[i] += dp[end+1];
                     }
@@ -63,7 +57,8 @@ public class LongestValidParentheses {
     }
 
     public static void main(String[] args) {
-        String s = ")(((((()())()()))()(()))(";
+        //String s = ")(((((()())()()))()(()))(";
+        String s = "(()";
 
         System.out.println(longestValidParentheses(s));
 
