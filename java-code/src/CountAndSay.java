@@ -11,6 +11,27 @@ import java.util.Map;
  * Note: The sequence of integers will be represented as a string.
  */
 public class CountAndSay {
+    public static String countAndSay2(int n) {
+        if (n==0) return null;
+        String currRes = "1";
+        for (int i=2; i<=n; i++) {
+            StringBuilder sb = new StringBuilder();
+            int count = 1; // skip the first one, move directly to the second one
+            for (int j=1; j<currRes.length(); j++) {
+                if (currRes.charAt(j) == currRes.charAt(j-1)) {
+                    count++;
+                } else {
+                    sb.append(count).append(currRes.charAt(j-1));
+                    count = 1;
+                }
+            }
+            sb.append(count).append(currRes.charAt(currRes.length()-1));
+            currRes = sb.toString();
+        }
+
+        return currRes;
+    }
+
     public static String countAndSay(int n) {
         if (n==0) return null;
         return helper(n);
@@ -47,5 +68,6 @@ public class CountAndSay {
     public static void main(String[] args) {
 
         System.out.println(countAndSay(5));
+        System.out.println(countAndSay2(5));
     }
 }
