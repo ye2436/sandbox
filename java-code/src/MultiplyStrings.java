@@ -20,8 +20,9 @@ public class MultiplyStrings {
         for (int i=num1.length()+num2.length(); i>0; i--) { // i: from m+n to 1
             // 取i-1与num1长度的小值，避免运算超过num1长度时高位为空的情况
             for (int j=Math.min(i-1, num1.length()); j>0; j--) { //why i-1? 因为如果没进位最长是m+n-1，那第m+n位是进位来的，不需要多计算
-                if (i-j < num2.length()) { // why?
-                    num += (num1.charAt(j-1)-'0') * (num2.charAt(i-1-j)-'0');
+                if (i-j <= num2.length()) { // make sure i-j-1 does not go out of bound
+                    // 如果记位从1开始，每次都是x位与i-x位，但字符记位都从0开始，所以减去1
+                    num += (num1.charAt(j-1)-'0') * (num2.charAt(i-j-1)-'0');
                 }
 
             }
@@ -34,6 +35,6 @@ public class MultiplyStrings {
     }
 
     public static void main(String[] args) {
-        System.out.println(multiply("", ""));
+        System.out.println(multiply("1", "1"));
     }
 }
