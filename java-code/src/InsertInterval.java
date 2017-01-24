@@ -12,6 +12,31 @@ import java.util.List;
  * This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
  */
 public class InsertInterval {
+    public static List<Interval> insert2(List<Interval> intervals, Interval newInterval) {
+        if (intervals == null || intervals.isEmpty()) return Arrays.asList(newInterval);
+
+        List<Interval> res = new ArrayList<>();
+        int i=0;
+        // add all intervals to res before newInterval is inserted
+        while (i<intervals.size() && intervals.get(i).end < newInterval.start) {
+            res.add(intervals.get(i++));
+        }
+        // merge all overlapping ones
+        while (i<intervals.size() && intervals.get(i).start <= newInterval.end) {
+            newInterval.start = Math.min(newInterval.start, intervals.get(i).start);
+            newInterval.end = Math.max(newInterval.end, intervals.get(i).end);
+            i++;
+        }
+        res.add(newInterval); // even when all intervals end are greater than newInterval, newInterval will be inserted here.
+
+        // add rest
+        while (i<intervals.size()) {
+            res.add(intervals.get(i++));
+        }
+        return res;
+    }
+
+
     public static List<Interval> insert(List<Interval> intervals, Interval newInterval) {
         if (intervals == null || intervals.isEmpty()) return Arrays.asList(newInterval);
 
@@ -55,7 +80,7 @@ public class InsertInterval {
         //list.add(new Interval(8,10));
         //list.add(new Interval(15,18));
         System.out.println(binarySearch(list, 0, 0, list.size()-1));
-        //System.out.println(printList(insert(list, new Interval(6,8))));
+        System.out.println(printList(insert(list, new Interval(6,8))));
     }
 
 
