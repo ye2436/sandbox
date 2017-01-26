@@ -27,8 +27,21 @@ public class UniquePaths {
     }
 
     // m+n-2 choose m-1, let m be the smaller one
+    public static int uniquePaths2(int m, int n) {
+        if (m<=0 || n<=0) return 0;
+        int smaller = Math.min(m,n) - 1;
+        int bigger = Math.max(m,n) - 1;
+        long numerator = 1;
+        long denominator = 1;
+        for (int i=1; i<=smaller; i++) {
+            denominator *= i;
+            numerator *= bigger+i;
+        }
+        return (int) (numerator/denominator);
+    }
 
     public static void main(String[] args) {
-        System.out.println(uniquePaths(3,7));
+        System.out.println(uniquePaths(10,10));
+        System.out.println(uniquePaths2(10,10));
     }
 }
