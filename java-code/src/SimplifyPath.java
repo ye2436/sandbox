@@ -27,23 +27,41 @@ import java.util.LinkedList;
  * In this case, you should ignore redundant slashes and return "/home/foo".
  */
 public class SimplifyPath {
+
     public static String simplifyPath(String path) {
         if (path == null || path.length() == 0) return null;
         LinkedList<String> stack = new LinkedList<>();
         String[] array = path.split("/");
         for (String s : array) {
-            if (".".equals(s)) {
+            if (".".equals(s) || "".equals(s)) {
                 continue;
             } else if ("..".equals(s)) {
                 if (!stack.isEmpty()) {
                     stack.pop();
                 }
+            } else {
+                stack.push(s);
             }
         }
-        return null;
+        if (stack.isEmpty()) return "/";
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()) {
+            if (sb.length()==0 || sb.charAt(sb.length()-1) != '/') {
+                sb.append("/");
+            }
+            sb.append(stack.removeLast());
+        }
+        return sb.toString();
     }
 
     public static void main(String[] args) {
-        System.out.println(simplifyPath(""));
+        System.out.println(simplifyPath("/a/./b///../c/../././../d/..//../e/./f/./g/././//.//h///././/..///"));
+        /*LinkedList<Integer> stack = new LinkedList<>();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        while(!stack.isEmpty()) {
+            System.out.println(stack.removeLast());
+        }*/
     }
 }
