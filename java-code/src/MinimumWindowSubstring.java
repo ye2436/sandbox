@@ -23,8 +23,11 @@ public class MinimumWindowSubstring {
                 chars.put(c, 1);
             }
         }
-        String minWindow = "";
+        //String minWindow = "";
+        int minStart = 0;
+        int minLen = 0;
         int count = 0;
+        int l = 0;
         for (int r=0; r<s.length(); r++) { // right side window
             char c = s.charAt(r);
             if (chars.containsKey(c)) {
@@ -36,17 +39,28 @@ public class MinimumWindowSubstring {
                 }
 
                 while (count == t.length()) { // left side window keeps moving right until hit a char exists in t
+                    if (minLen == 0 || r-l+1 < minLen) {
+                        minStart = l;
+                        minLen = r-l+1;
+                        //minWindow = s.substring(l,r+1);
+                    }
+                    if (chars.containsKey(s.charAt(l))) {
+                        chars.put(s.charAt(l), chars.get(s.charAt(l))+1);
+                        if (chars.get(s.charAt(l)) > 0) {
+                            count--;
+                        }
+                    }
 
+                    l++;
                 }
             }
 
         }
 
-
-        return minWindow;
+        return s.substring(minStart, minStart+minLen);
     }
 
     public static void main(String[] args) {
-        System.out.println(minWindow("",""));
+        System.out.println(minWindow("XADOBECODEBANC","ABC"));
     }
 }
