@@ -15,11 +15,40 @@
  */
 public class WordSearch {
     public static boolean exist(char[][] board, String word) {
+        if (word == null || word.length() == 0) return true;
+        if (board == null || board.length == 0 || board[0].length == 0) return false;
+        //boolean[][] used = new boolean[board.length][board[0].length];
+        for (int i=0; i<board.length; i++) {
+            for (int j=0; j<board[0].length; j++) {
+                if(helper(board, i, j, word, 0)){
+                    return true;
+                }
+            }
+        }
         return false;
+    }
+
+    private static boolean helper(char[][] board, int i, int j, String word, int index) {
+        if (index == word.length()) {
+            return true;
+        }
+
+        if (i<0 || j< 0 || i>=board.length || j>=board[0].length || word.charAt(index) != board[i][j]) {
+            return false; // if not found, return false and move on to the next one on board
+        }
+        //used[i][j] = true;
+        board[i][j] ^= 256;
+        boolean result =  helper(board, i+1, j, word, index+1)
+                || helper(board, i, j+1, word, index+1)
+                || helper(board, i, j-1, word, index+1)
+                || helper(board, i-1, j, word, index+1);
+        //used[i][j] = false; // revert back; make sure if will not interfere next calculation if curr result = false
+        board[i][j] ^= 256;
+        return result;
     }
 
     public static void main(String[] args) {
         char[][] board = {{'A','B','C','E'}, {'S','F','C','S'}, {'A','D','E','E'}};
-        System.out.println(exist(board, "ABCCED"));
+        System.out.println(exist(board, "ABCB"));
     }
 }
