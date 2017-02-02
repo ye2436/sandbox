@@ -7,6 +7,31 @@
  */
 public class RemoveDuplicatesFromSortedList {
     public static ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return head;
+        ListNode temp = head;
+        while (temp != null) {
+            ListNode next = temp.next;
+            while (next != null && temp.val == next.val) {
+                next = next.next;
+            }
+            temp.next = next;
+            temp = temp.next;
+        }
+        return head;
+    }
+
+    public ListNode deleteDuplicates2(ListNode head) {
+        if (head == null) return head;
+        ListNode pre = head;
+        ListNode cur = head.next;
+        while (cur != null) {
+            if(cur.val == pre.val) {
+                pre.next = cur.next;
+            } else {
+                pre = cur;
+            }
+            cur = cur.next;
+        }
         return head;
     }
 
@@ -32,6 +57,10 @@ public class RemoveDuplicatesFromSortedList {
         ListNode head = new ListNode(0);
         ListNode current = head;
         for (int i=1; i<=n; i++) {
+            current.next = new ListNode(i);
+            current = current.next;
+            current.next = new ListNode(i);
+            current = current.next;
             current.next = new ListNode(i);
             current = current.next;
         }
