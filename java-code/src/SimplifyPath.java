@@ -1,6 +1,7 @@
 import java.util.LinkedList;
 
 /**
+ * #71. Simplify Path
  * Given an absolute path for a file (Unix-style), simplify it.
  * For example,
  * path = "/home/", => "/home"

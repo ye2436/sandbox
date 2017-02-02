@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by yechen on 12/15/16.
+ * #1. Two Sum
  */
 public class TwoSum {
     public int[] solution_1(int[] nums, int target) {

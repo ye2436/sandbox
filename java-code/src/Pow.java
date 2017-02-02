@@ -1,4 +1,5 @@
 /**
+ * #50. Pow(x,n)
  * Implement pow(x, n).
  */
 public class Pow {

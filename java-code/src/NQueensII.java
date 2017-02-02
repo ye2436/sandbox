@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * #52. N-Queens II
  * Follow up for N-Queens problem.
  * Now, instead outputting board configurations, return the total number of distinct solutions.
  */
