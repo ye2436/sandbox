@@ -34,7 +34,7 @@ public class MaximalRectangle {
         int maxArea = 0;
         LinkedList<Integer> stack = new LinkedList<>();
         for (int i=0; i<heights.length; i++) {
-            if (!stack.isEmpty() && heights[stack.peek()] > heights[i]) {
+            while (!stack.isEmpty() && heights[stack.peek()] > heights[i]) {
                 int idx = stack.pop();
                 if (stack.isEmpty()) {
                     maxArea = Math.max(maxArea, heights[idx] * i);
