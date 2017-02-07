@@ -17,6 +17,33 @@ import java.util.List;
  * For now, the judge is able to judge based on one instance of gray code sequence. Sorry about that.
  */
 public class GrayCode {
+    public List<Integer> grayCode_3(int n) {
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < 1<<n; i++) result.add(i ^ i>>1);
+        return result;
+    }
+    public List<Integer> grayCode_2(int n) {
+        List<Integer> res = new ArrayList<Integer>();
+        if(n<0)
+            return res;
+        if(n==0)
+        {
+            res.add(0);
+            return res;
+        }
+        res.add(0);
+        res.add(1);
+        for(int i=2;i<=n;i++)
+        {
+            int size = res.size();
+            for(int j=size-1;j>=0;j--)
+            {
+                res.add(res.get(j)+(1<<(i-1)));
+            }
+        }
+        return res;
+    }
+
     public static List<Integer> grayCode(int n) {
         List<Integer> res = new ArrayList<>();
         if (n==0) {
