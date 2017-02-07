@@ -1,13 +1,21 @@
-package temp;
+package tree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-
-
 /**
- * //https://en.wikipedia.org/wiki/Tree_traversal
+ * #94. Binary Tree Inorder Traversal
+ * Given a binary tree, return the inorder traversal of its nodes' values.
+ * For example:
+ * Given binary tree [1,null,2,3],
+ *  1
+ *   \
+ *   2
+ *   /
+ *  3
+ * return [1,3,2].
+ * Note: Recursive solution is trivial, could you do it iteratively?
  */
 public class BinaryTreeInorderTraversal {
 
@@ -19,8 +27,9 @@ public class BinaryTreeInorderTraversal {
      *  inorder(node.left)
      *  visit(node)
      *  inorder(node.right)
+     *
+     * //https://en.wikipedia.org/wiki/Tree_traversal
      */
-
     public static List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         if (root != null) {
@@ -45,6 +54,8 @@ public class BinaryTreeInorderTraversal {
      *          node ← s.pop()
      *          visit(node)
      *          node ← node.right
+     *
+     * //https://en.wikipedia.org/wiki/Tree_traversal
      */
     public static List<Integer> inorderTraversal_2(TreeNode root) {
         List<Integer> result = new ArrayList<>();
@@ -85,19 +96,19 @@ public class BinaryTreeInorderTraversal {
                 result.add(curr.val);
                 curr = curr.right;
             } else {
-                /*pre = curr.left;
+                // finding predecessor(前驱) of current node -- that is the right most child of current node's left subtree
+                pre = curr.left; // 初始为左子树的根部
                 while (pre.right != null && pre.right != curr) {
                     pre = pre.right;
-                }*/
-                if (curr.left.right == null) {
-                    curr.left.right = curr;
+                }
+
+                if (pre.right == null) {
+                    pre.right = curr;
                     curr = curr.left;
-                } else if (curr.left.right == curr) {
+                } else if (pre.right == curr) {
                     result.add(curr.val);
-                    curr.left.right = null;
+                    pre.right = null;
                     curr = curr.right;
-                } else {
-                    curr = curr.left;
                 }
             }
         }
