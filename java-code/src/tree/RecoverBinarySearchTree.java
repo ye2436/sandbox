@@ -11,6 +11,11 @@ import java.util.List;
  * A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
  */
 public class RecoverBinarySearchTree {
+    // 1 6 3 4 5 2 - 2 & 6 swapped.
+    // first (6, 3) - store the max and the min of the 2
+    // then  (5, 2) - store the max and the min of the 2
+    // after traversal, swap the max and the min
+    // the anomaly pair could appear only once (when the swapped ones are adjacent), e.g. (3, 2)
     public static void recoverTree(TreeNode root) {
 
     }
