@@ -21,8 +21,17 @@ package tree;
 public class SymmetricTree {
     public static boolean isSymmetric(TreeNode root) {
         if (root == null) return true;
+        TreeNode l = root;
+        TreeNode r = root;
+        return helper(l, r);
+    }
 
-        return false;
+    // pre-order traverse & reversed pre-order traverse
+    private static boolean helper(TreeNode l, TreeNode r) {
+        if (l == null && r == null) return true;
+        if (l == null || r == null) return false;
+        if (l.val != r.val) return false;
+        return helper(l.left, r.right) && helper(l.right, r.left);
     }
 
     public static void main(String[] args) {
