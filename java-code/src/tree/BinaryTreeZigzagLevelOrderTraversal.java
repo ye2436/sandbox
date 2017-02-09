@@ -30,13 +30,63 @@ public class BinaryTreeZigzagLevelOrderTraversal {
         List<List<Integer>> res = new ArrayList<>();
         LinkedList<TreeNode> stack = new LinkedList<>();
         TreeNode curr = root;
-        List<Integer> levelResult = new ArrayList<>();
-        stack.add(curr);
+        List<Integer> levelResult;
+        stack.push(curr);
+        int level = 1;
         while (!stack.isEmpty()) {
+            LinkedList<TreeNode> newStack = new LinkedList<>(); // a new level starts
+            levelResult = new ArrayList<>();
+            while (!stack.isEmpty()) { // loop through nodes from last level
+                curr = stack.pop();
+                levelResult.add(curr.val);
 
+                if (level%2 == 1) {
+                    if (curr.left != null) {
+                        newStack.push(curr.left);
+                    }
+                    if (curr.right != null) {
+                        newStack.push(curr.right);
+                    }
+                } else {
+                    if (curr.right != null) {
+                        newStack.push(curr.right);
+                    }
+                    if (curr.left != null) {
+                        newStack.push(curr.left);
+                    }
+                }
+            }
+            // all nodes from previous level are processed. now add results from this last level to res, and reset values
+            if (levelResult.size() > 0) {
+                res.add(levelResult);
+                level++;
+                stack = newStack;
+            }
         }
 
         return res;
+    }
+
+    public static List<List<Integer>> zigzagLevelOrder_2(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        helper(root, 0, res);
+        return res;
+    }
+
+    private static void helper(TreeNode curr, int level, List<List<Integer>> res) {
+        if (curr == null) return;
+        if (res.size() <= level) {
+            res.add(new ArrayList<>());
+        }
+        List<Integer> levelResult = res.get(level);
+        if (level%2 == 0) {
+            levelResult.add(curr.val);
+        } else {
+            levelResult.add(0, curr.val); // insert into the first of the list, the rest shifts right.
+        }
+        helper(curr.left, level+1, res);
+        helper(curr.right, level+1, res);
     }
 
     public static void main(String[] args) {
@@ -61,12 +111,12 @@ public class BinaryTreeZigzagLevelOrderTraversal {
         TreeNode t3 = new TreeNode(3);
         TreeNode t4 = new TreeNode(4);
         TreeNode t5 = new TreeNode(5);
-        TreeNode t6 = new TreeNode(6);
+        //TreeNode t6 = new TreeNode(6);
         t1.left = t2;
         t1.right = t3;
         t2.left = t4;
-        t2.right = t5;
-        t4.left = t6;
+        t3.right = t5;
+        //t4.left = t6;
         return t1;
     }
 
