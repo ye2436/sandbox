@@ -8,14 +8,17 @@ package tree;
  */
 public class BalancedBinaryTree {
     public static boolean isBalanced(TreeNode root) {
-        if (root == null) return true;
-        return isBalanced(root.left) && isBalanced(root.right)
-                && Math.abs(maxDepth(root.left) - maxDepth(root.right)) <= 1;
+        return maxDepth(root) >= 0;
     }
 
-    private static int maxDepth(TreeNode root) {
+    private static int maxDepth(TreeNode root) { // use -1 to represent that tree is not balanced
         if (root == null) return 0;
-        return Math.max(maxDepth(root.left), maxDepth(root.right))+1;
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+        if (leftDepth < 0 || rightDepth < 0 || Math.abs(leftDepth - rightDepth) > 1) {
+            return -1;
+        }
+        return Math.max(leftDepth, rightDepth)+1;
     }
 
     public static void main(String[] args) {
