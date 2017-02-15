@@ -1,6 +1,7 @@
 package tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,8 +30,64 @@ import java.util.List;
  * If you notice carefully in the flattened tree, each node's right child points to the next node of a pre-order traversal.
  */
 public class FlattenBinaryTreeToLInkedList {
-    public static void flatten(TreeNode root) {
 
+    static TreeNode prev = null;
+
+    public static void flatten(TreeNode root) { // recursive
+        if (root == null) return;
+
+        flatten(root.right);
+        flatten(root.left);
+        root.right = prev;
+        root.left = null;
+        prev = root;
+    }
+
+
+    public static void flatten_iterative(TreeNode root) {
+        if (root == null) return;
+
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode curr = stack.pop();
+            if (curr.right != null) {
+                stack.push(curr.right);
+            }
+            if (curr.left != null) {
+                stack.push(curr.left);
+            }
+            if (!stack.isEmpty()) {
+                curr.right = stack.peek();
+            }
+            curr.left = null;
+        }
+    }
+
+    public void flatten_my(TreeNode root) {
+        if (root == null) return;
+
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        TreeNode last = root;
+        if (root.right != null) {
+            stack.push(root.right);
+        }
+        if (root.left != null) {
+            stack.push(root.left);
+            root.left = null;
+        }
+        while (!stack.isEmpty()) {
+            TreeNode curr = stack.pop();
+            last.right = curr;
+            last = curr;
+            if (curr.right != null) {
+                stack.push(curr.right);
+            }
+            if (curr.left != null) {
+                stack.push(curr.left);
+                curr.left = null;
+            }
+        }
     }
 
     public static void main(String[] args) {
