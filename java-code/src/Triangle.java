@@ -18,8 +18,22 @@ import java.util.List;
  */
 public class Triangle {
     public static int minimumTotal(List<List<Integer>> triangle) {
+        if (triangle == null || triangle.size() == 0) return 0;
+        // dp[i][j] represents the min sum at ith row and jth column
+        // it equals to the sum of 1) the min of the two adjacent points from upper level, and 2) triangle[i][j]'s value
+        // i.e., dp[i][j] = min(dp[i-1][j-1],dp[i-1][j]) + triangle[i][j]
 
-        return 0;
+        // we could use one dimensional array to record the row
+        int[] dp = new int[triangle.size()]; // triangle.size() is the # of rows, it equals to the length of the bottom row.
+        dp[0] = triangle.get(0).get(0); // init dp[0] to the value of the triangle top
+        for (int i=1; i<triangle.size(); i++) {
+
+            for (int j=1; j<=i; j++) { // j--?
+                dp[j] = Math.min(dp[j-1], dp[j]) + triangle.get(i).get(j);
+            }
+        }
+
+        return dp[dp.length-1];
     }
 
     public static void main(String[] args) {
