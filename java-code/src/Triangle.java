@@ -27,13 +27,20 @@ public class Triangle {
         int[] dp = new int[triangle.size()]; // triangle.size() is the # of rows, it equals to the length of the bottom row.
         dp[0] = triangle.get(0).get(0); // init dp[0] to the value of the triangle top
         for (int i=1; i<triangle.size(); i++) {
-
-            for (int j=1; j<=i; j++) { // j--?
+            // it needs to be reversed order because we need to preserve prev column from last row for calculation
+            dp[i] = dp[i-1] + triangle.get(i).get(i);
+            for (int j=i-1; j>=1; j--) {
                 dp[j] = Math.min(dp[j-1], dp[j]) + triangle.get(i).get(j);
             }
+            dp[0] = dp[0] + triangle.get(i).get(0);
         }
 
-        return dp[dp.length-1];
+        int minSum = dp[0];
+        for (int i=1; i<dp.length; i++) {
+            minSum = Math.min(minSum, dp[i]);
+        }
+
+        return minSum;
     }
 
     public static void main(String[] args) {
@@ -42,6 +49,6 @@ public class Triangle {
         triangle.add(Arrays.asList(3,4));
         triangle.add(Arrays.asList(6,5,7));
         triangle.add(Arrays.asList(4,1,8,3));
-        System.out.println(triangle);
+        System.out.println(minimumTotal(triangle));
     }
 }
