@@ -47,6 +47,7 @@ public class BinaryTreeLevelOrderTraversal {
         LinkedList<TreeNode> queue = new LinkedList<>();
         queue.add(curr); // list max size: 2^n
         // 这是BFS中常用的两个变量，curNum表示当前层数扫描到的元素个数，lastNum是上一层的元素个数，维护这两个变量可以统计出当前所在的层数
+        // （相同的用法参见 Word Ladder）
         int currNum = 0;
         int lastNum = 1;
 
