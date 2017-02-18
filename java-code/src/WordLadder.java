@@ -55,8 +55,9 @@ public class WordLadder {
 
     public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
         if (beginWord == null || beginWord.length() == 0 || endWord == null || endWord.length() == 0
-                || beginWord.length() != endWord.length()) return 0;
+                || beginWord.length() != endWord.length()  || !wordList.contains(endWord)) return 0;
 
+        Set<String> dict = new HashSet<>(wordList);
         int len = beginWord.length();
         LinkedList<String> queue = new LinkedList();
         Set<String> visited = new HashSet<>();
@@ -74,13 +75,33 @@ public class WordLadder {
             // 如果和 endWord只差一个字符就找到了
             // replace 1 character in curr at a time, check if the new word is in wordList and unvisited,
             // add it to the queue and mark visited
-            // check 25 * L times
+            // check 25 * L times at most
             for (int i=0; i<len; i++) {
+                char[] charArray = curr.toCharArray();
+                for (char c='a'; c<='z'; c++) {
+                    // replace character at length i with a to z
+                    charArray[i] = c;
+                    String newWord = new String(charArray);
+                    if (newWord.equals(endWord)) {
+                        return step+1;
+                    }
+                    // in the wordList and not visited (excludes the startWord)
+                    if (dict.contains(newWord) && !visited.contains(newWord)) {
+                        queue.add(newWord);
+                        visited.add(newWord);
+                        currNum++;
+                    }
+                }
+            }
 
+            if (lastNum == 0) { // last level all visited
+                lastNum = currNum;
+                currNum = 0;
+                step++;
             }
         }
 
-        return 0;
+        return 0; // not found
     }
 
     public static void main(String[] args) {
