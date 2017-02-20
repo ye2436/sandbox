@@ -1,3 +1,5 @@
+package linkedlist;
+
 /**
  * #61. Rotate List
  * Given a list, rotate the list to the right by k places, where k is non-negative.
@@ -64,7 +66,7 @@ public class RotateList {
     }
 
     /////////////////////////////////
-    public static class ListNode {
+    private static class ListNode {
         int val;
         ListNode next;
 

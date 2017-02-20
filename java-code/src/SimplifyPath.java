@@ -57,7 +57,7 @@ public class SimplifyPath {
 
     public static void main(String[] args) {
         System.out.println(simplifyPath("/a/./b///../c/../././../d/..//../e/./f/./g/././//.//h///././/..///"));
-        /*LinkedList<Integer> stack = new LinkedList<>();
+        /*linkedlist.LinkedList<Integer> stack = new linkedlist.LinkedList<>();
         stack.push(1);
         stack.push(2);
         stack.push(3);

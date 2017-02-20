@@ -1,3 +1,5 @@
+package linkedlist;
+
 /**
  * #86. Partition List
  * Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
@@ -62,7 +64,7 @@ public class PartitionList {
         return head.next;
     }
 
-    public static class ListNode {
+    private static class ListNode {
         int val;
         ListNode next;
 
