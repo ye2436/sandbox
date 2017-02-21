@@ -1,6 +1,7 @@
 package tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -8,23 +9,108 @@ import java.util.List;
  * Given a binary tree, return the preorder traversal of its nodes' values.
  * For example:
  * Given binary tree {1,#,2,3},
- *  1
- *   \
- *    2
- *   /
- *  3
+ *      1
+ *       \
+ *       2
+ *      /
+ *     3
  * return [1,2,3].
  * Note: Recursive solution is trivial, could you do it iteratively?
  */
 public class BinaryTreePreorderTraversal {
+
+    // recursive - 算法的时间复杂度是O(n), 而空间复杂度则是递归栈的大小，即O(logn)。
+    /**
+     * preorder(node)
+     *  if (node = null)
+     *      return
+     *  visit(node)
+     *  preorder(node.left)
+     *  preorder(node.right)
+     *
+     * Source: https://en.wikipedia.org/wiki/Tree_traversal#Pre-order_2
+     */
     public static List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> res = new ArrayList<>();
+        if (root != null) {
+            res.add(root.val);
+            res.addAll(preorderTraversal(root.left));
+            res.addAll(preorderTraversal(root.right));
+        }
+        return res;
+    }
 
+    // iterative - 算法时间复杂度也是O(n)，空间复杂度是栈的大小O(logn)。
+    /**
+     * iterativePreorder(node)
+     *  if (node = null)
+     *      return
+     *  s ← empty stack
+     *  s.push(node)
+     *  while (not s.isEmpty())
+     *      node ← s.pop()
+     *      visit(node)
+     *      if (node.right ≠ null)
+     *          s.push(node.right)
+     *      if (node.left ≠ null)
+     *          s.push(node.left)
+     *
+     * Source: https://en.wikipedia.org/wiki/Tree_traversal#Pre-order_2
+     */
+    public static List<Integer> preorderTraversal_2(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode curr = stack.pop();
+            res.add(curr.val);
+            if (curr.right != null) {
+                stack.push(curr.right);
+            }
+            if (curr.left != null) {
+                stack.push(curr.left);
+            }
+        }
+        return res;
+    }
+
+    // Morris Traversal: 利用叶子节点中的右空指针指向中序遍历下的后继节点就可以了
+    // 先序和中序的方法几乎完全一样，除了访问父节点的时机
+    public static List<Integer> preorderTraversal_3(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
+        TreeNode curr = root;
+        TreeNode pre = null;
+        while (curr != null) {
+            if (curr.left == null) {
+                res.add(curr.val);
+                curr = curr.right;
+            } else {
+                // find predecessor node of curr - the right most node of left sub tree, or left sub tree itself if it has no right child
+                pre = curr.left;
+                while (pre.right != null && pre.right != curr) { // check pre.right != curr 防止再次回到curr时，找pre的时候造成死循环
+                    pre = pre.right;
+                }
+
+                if (pre.right == null) { // 第一次访问curr，建立pre和curr之间的thread，然后访问左子树
+                    res.add(curr.val);
+                    pre.right = curr;
+                    curr = curr.left;
+                } else { // pre.right == curr, 由于有线索指回curr，这一定是第二次访问curr。删除线索，恢复原结构，访问curr的右子树
+                    pre.right = null;
+                    curr = curr.right;
+                }
+            }
+        }
         return res;
     }
 
     public static void main(String[] args) {
-        System.out.println(preorderTraversal(generate()));
+        TreeNode root = generate();
+        System.out.println(preorderTraversal(root));
+        System.out.println(preorderTraversal_2(root));
+        System.out.println(preorderTraversal_3(root));
     }
 
     private static TreeNode generate() {
