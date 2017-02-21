@@ -1,6 +1,7 @@
 package tree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -62,7 +63,22 @@ public class BinaryTreePostorderTraversal {
      */
     public static List<Integer> postorderTraversal_2(TreeNode root) {
         List<Integer> res = new ArrayList<>();
-        if (root == null) return res;
+        LinkedList<TreeNode> stack = new LinkedList<>();
+        TreeNode lastVisited = null;
+        while (!stack.isEmpty() || root != null) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } else { // stack not empty
+                TreeNode peek = stack.peek();
+                if (peek.right != null && peek.right != lastVisited) { // if right child exists
+                    root = peek.right;
+                } else {
+                    res.add(peek.val);
+                    lastVisited = stack.pop();
+                }
+            }
+        }
 
         return res;
     }
