@@ -6,7 +6,20 @@
  */
 public class MaximumProductSubarray {
     public static int maxProduct(int[] nums) {
-        return 0;
+        if(nums == null || nums.length == 0) return 0;
+
+        int max_ending_here = nums[0];
+        int min_ending_here = nums[0];
+        int max_so_far = nums[0];
+        for(int i=1; i<nums.length; i++) {
+            int num = nums[i];
+            int max_temp = max_ending_here;
+            max_ending_here = Math.max(num, Math.max(max_temp * num, min_ending_here * num));
+            min_ending_here = Math.min(num, Math.min(max_temp * num, min_ending_here * num));
+            max_so_far = Math.max(max_so_far, max_ending_here);
+        }
+
+        return max_so_far;
     }
 
     public static void main(String[] args) {
