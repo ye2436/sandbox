@@ -8,6 +8,16 @@ import java.util.*;
  */
 public class NearestKPoints {
 
+    // Binary Heap
+    // Algorithm 		Average 	Worst Case
+    // Space 		O(n) 	        O(n)
+    // Search 		O(n) 	        O(n)
+    // Insert 		O(1) 	        O(log n)
+    // Delete 		O(log n) 	    O(log n)
+    // Peek 		O(1) 	        O(1)
+
+    // so when using min heap, we are inserting into a heap size of n for n times
+    // whereas using max heap, we are inserting into a heap size of k for n times
     // 可以用最小堆也可以用最大堆。
     // 1. 最小堆。把所有点放进最小堆（根据点到中心的距离比大小），然后取k个点出来。时间复杂度O(nlogn)。
     // 2. 最大堆。遍历每个点，对于当前点：
@@ -18,60 +28,28 @@ public class NearestKPoints {
 
     // We can use a maxHeap to maintain k points. The comparator is the distance to center point.
     // When adding more points, if it is closer to the center than the heap top, we pop the heap top and add the new point into the maxHeap.
-
-
-    public List<Point> findKClosest(Point[] p, int k) {
-        PriorityQueue<Point> pq = new PriorityQueue<>(10, new Comparator<Point>() {
+    public List<Point> findKClosestMy(List<Point> list, final Point center, int k) {
+        PriorityQueue<Point> maxHeap = new PriorityQueue<>(k, new Comparator<Point>() {
             @Override
-            public int compare(Point a, Point b) {
-                return (b.x * b.x + b.y * b.y) - (a.x * a.x + a.y * a.y);
-            }
-        });
-
-        for (int i = 0; i < p.length; i++) {
-            if (i < k)
-                pq.offer(p[i]);
-            else {
-                Point temp = pq.peek();
-                if ((p[i].x * p[i].x + p[i].y * p[i].y) - (temp.x * temp.x + temp.y * temp.y) < 0) {
-                    pq.poll();
-                    pq.offer(p[i]);
-                }
-            }
-        }
-
-        List<Point> x = new ArrayList<>();
-        while (!pq.isEmpty())
-            x.add(pq.poll());
-
-        return x;
-    }
-
-    Set<Point> points = new HashSet<Point>(); //?
-
-    public Collection<Point> findNearest(Point center, int m) {
-        PriorityQueue<Point> maxHeap = new PriorityQueue<Point>(m, new Comparator<Point>() {
-            @Override
+            // return positive if distance(p2, center) is greater than distance(p1, center)
             public int compare(Point p1, Point p2) {
-                return Double.compare(getDistance(p2, center), getDistance(p1, center));
+                return getDistance(p2, center) - getDistance(p1, center);
             }
         });
-        for (Point p: points) {
-            if (center == p) {
-                continue;
-            }
-            if (maxHeap.size() < m) {
-                maxHeap.add(p);
-            } else if (getDistance(p, center) < getDistance(maxHeap.peek(), center)) {
-                maxHeap.remove();
-                maxHeap.add(p);
+
+        for (Point point : list) {
+            if (maxHeap.size() < k) {
+                maxHeap.offer(point);
+            } else if (getDistance(point, center) < getDistance(maxHeap.peek(), center)) {
+                maxHeap.poll();
+                maxHeap.offer(point);
             }
         }
-        return maxHeap;
+        return null;
     }
 
-    private double getDistance(Point p1, Point p2) {
-        return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+    private int getDistance(Point p1, Point p2) {
+        return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
     }
 
     public class Point {

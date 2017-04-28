@@ -1,7 +1,6 @@
 package interview.li;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 366. Find Leaves of Binary Tree
@@ -28,16 +27,34 @@ import java.util.List;
 public class FindLeavesOfBinaryTree {
 
     public List<List<Integer>> findLeaves(TreeNode root) {
-        return null;
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+        helper(root, result);
+        return result;
+    }
+
+    // The height of a node is the number of edges on the longest path between that node and a leaf.
+    // The depth of a node is the number of edges from the tree's root node to the node.
+    private int helper(TreeNode node, List<List<Integer>> result) { // returns height
+        if (node == null) {
+            return -1;
+        }
+        // if both left and right is null, height is 0
+        int height = Math.max(helper(node.left, result), helper(node.right, result)) + 1;
+        /*while (result.size() < height) {
+            result.add(new ArrayList<>());
+        }*/ // not necessary because it is done recursively, the list is filled from the bottom of the tree and up
+        if (result.size() == height) {
+            result.add(new ArrayList<>());
+        }
+        result.get(height).add(node.val);
+        return height;
     }
 
     public class TreeNode {
-        String val;
-        List<TreeNode> children;
-
-        TreeNode(String val) {
-            this.val = val;
-            this.children = new ArrayList<>();
-        }
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
     }
 }
