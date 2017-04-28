@@ -1,5 +1,8 @@
 package lc.tree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * #117. Populating Next Right Pointers in Each Node II
  * Follow up for problem "Populating Next Right Pointers in Each Node".
@@ -8,13 +11,13 @@ package lc.tree;
  * You may only use constant extra space.
  * For example,
  * Given the following binary lc.tree,
- *          1
+ *           1
  *         /  \
  *        2    3
  *       / \    \
  *      4   5    7
  * After calling your function, the lc.tree should look like:
- *          1 -> NULL
+ *           1 -> NULL
  *         /  \
  *        2 -> 3 -> NULL
  *       / \    \
@@ -22,7 +25,7 @@ package lc.tree;
  */
 public class PopulatingNextRightPointersInEachNodeII {
 
-    public static void connect(TreeLinkNode root) {
+    public void connect(TreeLinkNode root) {
         TreeLinkNode lastHead = root;
         TreeLinkNode currHead = null;
         while (lastHead != null) {
@@ -58,9 +61,31 @@ public class PopulatingNextRightPointersInEachNodeII {
         }
     }
 
+    public void connect2(TreeLinkNode root) {
+        TreeLinkNode dummyHead = new TreeLinkNode(0);
+        TreeLinkNode pre = dummyHead;
+        while (root != null) {
+            if (root.left != null) {
+                pre.next = root.left;
+                pre = pre.next;
+            }
+            if (root.right != null) {
+                pre.next = root.right;
+                pre = pre.next;
+            }
+            root = root.next;
+            if (root == null) {
+                pre = dummyHead;
+                root = dummyHead.next;
+                dummyHead.next = null;
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        TreeLinkNode root = generate();
-        connect(root);
+        PopulatingNextRightPointersInEachNodeII instance = new PopulatingNextRightPointersInEachNodeII();
+        TreeLinkNode root = instance.generate();
+        instance.connect(root);
         while (root != null) {
             TreeLinkNode curr = root;
             while (curr != null) {
@@ -72,7 +97,7 @@ public class PopulatingNextRightPointersInEachNodeII {
         }
     }
 
-    private static TreeLinkNode generate() {
+    private TreeLinkNode generate() {
 
         TreeLinkNode t1 = new TreeLinkNode(1);
         TreeLinkNode t2 = new TreeLinkNode(2);
@@ -90,7 +115,7 @@ public class PopulatingNextRightPointersInEachNodeII {
         return t1;
     }
 
-    private static class TreeLinkNode {
+    private class TreeLinkNode {
         int val;
         TreeLinkNode left, right, next;
         TreeLinkNode(int x) { val = x; }

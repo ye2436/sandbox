@@ -29,7 +29,7 @@ package lc.tree;
  */
 public class PopulatingNextRightPointersInEachNode {
 
-    public static void connect(TreeLinkNode root) {
+    public void connect(TreeLinkNode root) {
         TreeLinkNode level_start = root;
         while (level_start != null) {
             TreeLinkNode curr = level_start; // previous/parent level
@@ -48,7 +48,7 @@ public class PopulatingNextRightPointersInEachNode {
 
     }
 
-    public static void connect_my(TreeLinkNode root) {
+    public void connect_my(TreeLinkNode root) {
         if (root == null) return;
         TreeLinkNode node = root;
         while (node.left != null) {
@@ -69,8 +69,9 @@ public class PopulatingNextRightPointersInEachNode {
     }
 
     public static void main(String[] args) {
-        TreeLinkNode root = generate();
-        connect(root);
+        PopulatingNextRightPointersInEachNode instance = new PopulatingNextRightPointersInEachNode();
+        TreeLinkNode root = instance.generate();
+        instance.connect(root);
         while (root != null) {
             TreeLinkNode curr = root;
             while (curr != null) {
@@ -82,7 +83,7 @@ public class PopulatingNextRightPointersInEachNode {
         }
     }
 
-    private static TreeLinkNode generate() {
+    private TreeLinkNode generate() {
 
         TreeLinkNode t1 = new TreeLinkNode(1);
         TreeLinkNode t2 = new TreeLinkNode(2);
@@ -100,7 +101,7 @@ public class PopulatingNextRightPointersInEachNode {
         return t1;
     }
 
-    private static class TreeLinkNode {
+    private class TreeLinkNode {
         int val;
         TreeLinkNode left, right, next;
         TreeLinkNode(int x) { val = x; }
