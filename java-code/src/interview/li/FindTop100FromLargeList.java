@@ -13,4 +13,14 @@ package interview.li;
 // Here the index means the age. After this it's a piece of cake to find 100 largest number.
 // By the way this algo is called counting sort.
 public class FindTop100FromLargeList {
+
+    // use maxHeap
+    public void findSmallest() {
+
+    }
+
+    // use minHeap
+    public void findLargest() {
+
+    }
 }
