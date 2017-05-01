@@ -31,7 +31,7 @@ public class RetainBestCache {
     interface Rankable { long getRank(); }
     interface DataSource { T get(K key); }
 */
-    public class RankCache {
+    public class RankCache<T> {
 
         Map<Integer, Rankable> cache = new HashMap<>(); // so we can get with O(1)
         PriorityQueue<Rankable> minHeap;
@@ -85,6 +85,8 @@ public class RetainBestCache {
     interface DataSource {
         Rankable get(int key);
     }
+
+
 
 
 }

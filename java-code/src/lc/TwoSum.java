@@ -6,7 +6,8 @@ import java.util.Map;
 /**
  * #1. Two Sum
  */
-public class TwoSum {
+public class
+TwoSum {
     public int[] solution_1(int[] nums, int target) {
         int index1 = 0;
         int index2 = 0;
