@@ -16,7 +16,9 @@ package interview.bb;
  */
 public class DistanceBetweenTreeNodes {
 
-    public int findDistance(TreeNode node1, TreeNode node2) {
+    // find Lowest Common Ancestor of node1 and node2. and then get distances from lca to node1 and node2
+    // add the distances.
+    public int findDistance(TreeNode root, TreeNode node1, TreeNode node2) {
         return 0;
     }
 
