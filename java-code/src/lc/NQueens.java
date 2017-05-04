@@ -23,6 +23,56 @@ import java.util.*;
  */
 public class NQueens {
 
+    // dfs
+    public static List<List<String>> solveNQueens_2(int n) {
+        if (n==0) return new ArrayList<>();
+        List<List<String>> res = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (int i=0; i<n; i++) {
+            for (int j=0; j<n; j++) {
+                board[i][j] = '.';
+            }
+        }
+        helper_2(board, res, 0);
+        return res;
+    }
+
+    // only need to keep track of row number, because there could be only 1 queen in a row
+    // we are processing one row at a time
+    private static void helper_2(char[][] board, List<List<String>> res, int row) { // board initialized with '.'
+        if (row == board.length) {
+            // add current board to res and return
+            List<String> solution = new ArrayList<>();
+            for (int i = 0; i<board.length; i++) {
+                solution.add(new String(board[i]));
+            }
+            res.add(solution);
+            return;
+        }
+
+        for (int i=0; i<board.length; i++) {
+            board[row][i] = 'Q';
+            if (isValid_2(board, row, i)) {
+                helper_2(board, res, row+1);
+            }
+            board[row][i] = '.';
+        }
+    }
+
+    private static boolean isValid_2(char[][] board, int row, int column) {
+        // no need to check the columns on the same row because we add only 1 to a row
+        // so check above rows, and left upper diagonal, and right upper diagonal
+        for (int i=0; i<row; i++) { // i is all the rows before row
+            if (board[i][column] == board[row][column]
+                    || column-row+i >=0 && board[i][column-row+i] == board[row][column]
+                    || column+row-i < board.length && board[i][column+row-i] == board[row][column])
+                return false;
+        }
+        return true;
+    }
+
+    /////////// better solution with fewer space complexity /////////////
+
     public static List<List<String>> solveNQueens(int n) {
         if (n==0) return new ArrayList<>();
         List<List<String>> res = new ArrayList<>();
@@ -63,49 +113,8 @@ public class NQueens {
         return true;
     }
 
-    private static boolean helper_tel(int n, int count, int i, int j, char[][] board, List<List<String>> res) {
-        if (j == n) {
-            i++;
-            j = 0;
-        }
-        if (i == n) {
-            if (count == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        board[i][j] = 'Q';
-        if (isValid_tel(i, j, board) && helper_tel(n, count-1, i, j+1, board, res)) {
-            List<String> solution = new ArrayList<>();
-            for (int r=0; r<n; r++) {
-                solution.add(new String(board[r]));
-            }
-            res.add(solution);
-        }
-        board[i][j] = '.';
-        return helper_tel(n, count, i, j+1, board, res);
-    }
-
-    private static boolean isValid_tel(int i, int j, char[][] board) {
-        int n = board.length;
-        for (int k=0; k<i; k++) { // up
-            if(board[k][j] == 'Q') return false;
-        }
-        for (int k=0; k<j; k++) { // left
-            if(board[i][k] == 'Q') return false;
-        }
-
-        for (int k=1; k<=Math.min(i,j); k++) { //diagonal
-            if (board[i-k][j-k] == 'Q') return false; // left up
-        }
-        for (int k=1; k<=Math.min(i,n-1-j); k++) { //diagonal
-            if (board[i-k][j+k] == 'Q') return false; // right up
-        }
-        return true;
-    }
-
     public static void main(String[] args) {
         System.out.println(solveNQueens(6));
+        System.out.println(solveNQueens_2(6));
     }
 }
