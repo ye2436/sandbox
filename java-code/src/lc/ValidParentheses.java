@@ -1,8 +1,6 @@
 package lc;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * #20. Valid Parentheses
@@ -25,6 +23,7 @@ public class ValidParentheses {
                 stack.push(s.charAt(i));
             }
         }
+
 
         return stack.empty();
     }
