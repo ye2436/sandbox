@@ -40,13 +40,13 @@ public class WordSearch {
             return false; // if not found, return false and move on to the next one on board
         }
         //used[i][j] = true;
-        board[i][j] ^= 256;
+        board[i][j] ^= 256; // bit mask the char at (i,j)
         boolean result =  helper(board, i+1, j, word, index+1)
                 || helper(board, i, j+1, word, index+1)
                 || helper(board, i, j-1, word, index+1)
                 || helper(board, i-1, j, word, index+1);
         //used[i][j] = false; // revert back; make sure if will not interfere next calculation if curr result = false
-        board[i][j] ^= 256;
+        board[i][j] ^= 256; // toggle it back
         return result;
     }
 
