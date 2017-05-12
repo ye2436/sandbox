@@ -1,4 +1,4 @@
-package interview.bb;
+package interview.ms;
 
 /**
  * 387. First Unique Character in a String
