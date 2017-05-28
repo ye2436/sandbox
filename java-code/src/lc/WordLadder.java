@@ -106,10 +106,62 @@ public class WordLadder {
         return 0; // not found
     }
 
+    // two-end BFS
+    public static int ladderLength2(String beginWord, String endWord, List<String> wordList) {
+        Set<String> dict = new HashSet<>(wordList);
+        Set<String> beginSet = new HashSet<>();
+        Set<String> endSet = new HashSet<>();
+        beginSet.add(beginWord);
+        if (dict.contains(endWord)) {
+            endSet.add(endWord); // assumption: endWord not necessarily in the dict
+        }
+
+        int len = 1; // ladder length
+        int strLen = beginWord.length();
+        Set<String> visited = new HashSet<>();
+
+        while (!beginSet.isEmpty() && !endSet.isEmpty()) {
+            // alternate 2 sets to perform two-end search
+            // always search from the set with fewer nodes
+            if (beginSet.size() > endSet.size()) {
+                Set<String> tmpSet = beginSet;
+                beginSet = endSet;
+                endSet = tmpSet;
+            }
+
+            Set<String> next = new HashSet<>();
+            for (String word : beginSet) {
+                char[] array = word.toCharArray();
+
+                for (int i=0; i<strLen; i++) {
+                    char old = array[i];  // original char at index i
+                    for (char c='a'; c<='z'; c++) {
+                        array[i] = c;
+                        String newWord = new String(array);
+                        if (endSet.contains(newWord)) {
+                            return len+1;
+                        }
+                        if (dict.contains(newWord) && !visited.contains(newWord)) {
+                            next.add(newWord);
+                            visited.add(newWord);
+                        }
+                    }
+                    array[i] = old; // revert back index i to its original before moving to next index
+                }
+            }
+            // after visiting all in the curr begin set
+            len++;
+            beginSet = next;
+        }
+
+        return 0;
+    }
+
     public static void main(String[] args) {
         String beginWord = "hit";
         String endWord = "cog";
-        List<String> wordList = Arrays.asList("hot","dot","dog","lot","log","cog");
+        List<String> wordList = Arrays.asList("hot","dot","dog","lot","log");
         System.out.println(ladderLength(beginWord, endWord, wordList));
+        System.out.println(ladderLength2(beginWord, endWord, wordList));
     }
 }

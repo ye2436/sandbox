@@ -23,6 +23,46 @@ import java.util.LinkedList;
  *        \_/
  */
 public class CloneGraph {
+
+    public UndirectedGraphNode cloneGraph_dfs_practice(UndirectedGraphNode node) {
+        return clone(node, new HashMap<>());
+    }
+
+    // visited map : old node -> cloned node
+    public UndirectedGraphNode clone(UndirectedGraphNode node, Map<UndirectedGraphNode, UndirectedGraphNode> visited) {
+        if (node == null) return null;
+        if (visited.containsKey(node)) {
+            return visited.get(node);
+        }
+        UndirectedGraphNode cloned = new UndirectedGraphNode(node.label);
+        visited.put(node, cloned);
+        for (UndirectedGraphNode neighbor : node.neighbors) {
+            cloned.neighbors.add(clone(neighbor, visited));
+        }
+        return cloned;
+    }
+
+    public UndirectedGraphNode cloneGraph_bfs_practice(UndirectedGraphNode node) {
+        if (node == null) return null;
+        Queue<UndirectedGraphNode> queue = new LinkedList<>();
+        queue.offer(node);
+        Map<UndirectedGraphNode, UndirectedGraphNode> visited = new HashMap<>();
+        visited.put(node, new UndirectedGraphNode(node.label));
+        while (!queue.isEmpty()) {
+            UndirectedGraphNode curr = queue.poll();
+            // now check neighbors
+            for (UndirectedGraphNode neighbor : curr.neighbors) {
+                if (!visited.containsKey(neighbor)) {
+                    visited.put(neighbor, new UndirectedGraphNode(neighbor.label));
+                    queue.offer(neighbor);
+                }
+                visited.get(curr).neighbors.add(visited.get(neighbor));
+            }
+        }
+        return visited.get(node);
+    }
+
+
     // BFS
     public static UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
         if (node == null) return null;

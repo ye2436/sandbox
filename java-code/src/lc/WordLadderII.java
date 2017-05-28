@@ -41,7 +41,80 @@ public class WordLadderII {
         if (beginWord == null || beginWord.length() == 0 || endWord == null || endWord.length() == 0
                 || beginWord.length() != endWord.length()  || !dict.contains(endWord)) return res;
 
+        return res;
+    }
 
+
+    // only print the shortest path
+    // Using BFS, the first path we found is the shortest path
+    // Here for efficiency, we use two-end bfs
+    // 如果是只要一条最短路径，只需要一次bfs。具体来说在bfs的过程中，在把下一层节点i加入queue的时候，用一个map记录，key是下一层节点i的id, value是本层的节点id。
+    // 这样到最后，就可以从结束点开始往前找parent，一直找到开头的点。因为加入queue的过程就是确定下一层点的parent的过程，所以每个点只进入queue一次，这个用set来保证。
+    public static List<String> findLadders15(String beginWord, String endWord, List<String> wordList) {
+        List<String> res = new ArrayList<>();
+        Set<String> dict = new HashSet<>(wordList);
+        Set<String> beginSet = new HashSet<>();
+        Set<String> endSet = new HashSet<>();
+        beginSet.add(beginWord);
+        if (dict.contains(endWord)) {
+            endSet.add(endWord); // assumption: endWord not necessarily in the dict
+        }
+
+        int strLen = beginWord.length();
+        Set<String> visited = new HashSet<>();
+        Map<String, String> map = new HashMap<>(); // node -> to its predecessor
+        boolean reversed = false; // to ensure the node path are added in the correct direction
+
+        while (!beginSet.isEmpty() && !endSet.isEmpty()) {
+            if (beginSet.size() > endSet.size()) { // swap to the smaller set
+                Set<String> temp = beginSet;
+                beginSet = endSet;
+                endSet = temp;
+                reversed = !reversed;
+            }
+
+            Set<String> next = new HashSet<>();
+            for (String word : beginSet) {
+                char[] array = word.toCharArray();
+
+                for (int i=0; i<strLen; i++) {
+                    char old = array[i];
+
+                    for (char c = 'a'; c<='z'; c++) {
+                        array[i] = c;
+                        String newWord = new String(array);
+
+                        String key = reversed ? word : newWord;
+                        String value = reversed ? newWord : word;
+
+                        if (endSet.contains(newWord)) {
+                            map.put(key, value); // the last key value pair to be added
+                            // return word ladders from newWord to beginWord
+                            return constructResult(map, beginWord, endWord);
+                        }
+
+                        if (dict.contains(newWord) && !visited.contains(newWord)) {
+                            next.add(newWord);
+                            visited.add(newWord);
+                            map.put(key, value);
+                        }
+                    }
+
+                    array[i] = old;
+                }
+            }
+            beginSet = next;
+        }
+        return res;
+    }
+
+    public static List<String> constructResult(Map<String, String> map, String beginWord, String endWord) {
+        List<String> res = new ArrayList<>();
+        res.add(endWord);
+        while (res.get(0) != beginWord) {
+            endWord = map.get(endWord);
+            res.add(0, endWord);
+        }
         return res;
     }
 
@@ -50,5 +123,6 @@ public class WordLadderII {
         String endWord = "cog";
         List<String> wordList = Arrays.asList("hot","dot","dog","lot","log","cog");
         System.out.println(findLadders(beginWord, endWord, wordList));
+        System.out.println(findLadders15(beginWord, endWord, wordList));
     }
 }

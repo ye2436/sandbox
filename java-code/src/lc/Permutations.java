@@ -24,8 +24,8 @@ public class Permutations {
         List<List<Integer>> res = new ArrayList<>();
         if (nums == null || nums.length == 0) return res;
 
-        //helper(nums, new boolean[nums.length], new ArrayList<>(), res);
-        helper2(nums, new ArrayList<>(), res);
+        helper(nums, new boolean[nums.length], new ArrayList<>(), res);
+        //helper2(nums, new ArrayList<>(), res);
         return res;
     }
 

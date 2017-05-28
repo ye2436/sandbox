@@ -60,6 +60,52 @@ public class SingleValidTree {
         return children.size() == 0;
     }
 
+    public boolean isValid_practice(List<TreeNode> nodes) {
+        // 1. find if a child node has multiple parents. store children in the process.
+        // 2. check if there is only 1 single root node
+        // 3. validate tree by traversing and make sure all children nodes are used.
+        Set<TreeNode> children = new HashSet<>();
+        for (TreeNode node : nodes) {
+            if (node.left != null) {
+                if (children.contains(node.left)) {
+                    return false;
+                }
+                children.add(node.left);
+            }
+            if (node.right != null) {
+                if (children.contains(node.right)) {
+                    return false;
+                }
+                children.add(node.right);
+            }
+        }
+
+        List<TreeNode> rootCandidates = new ArrayList<>();
+        for (TreeNode node : nodes) {
+            if (!children.contains(node)) {
+                rootCandidates.add(node);
+            }
+        }
+        if (rootCandidates.size() != 1) {
+            return false;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(rootCandidates.get(0));
+        while (!queue.isEmpty()) {
+            TreeNode curr = queue.poll();
+            if (curr.left != null) {
+                queue.offer(curr.left);
+                children.remove(curr.left);
+            }
+            if (curr.right != null) {
+                queue.offer(curr.right);
+                children.remove(curr.right);
+            }
+        }
+        return children.size() == 0;
+    }
+
     public class TreeNode {
         int val;
         TreeNode left;

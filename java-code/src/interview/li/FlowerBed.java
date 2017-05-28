@@ -1,5 +1,6 @@
 package interview.li;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,5 +41,34 @@ public class FlowerBed {
         }
 
         return false;
+    }
+
+    public static boolean canPlaceFlowers2(List<Boolean> flowerbed, int numberToPlace) {
+        if (flowerbed == null || flowerbed.isEmpty()) {
+            // exception;
+            return false;
+        }
+
+        if (numberToPlace == 0) return true;
+        if (flowerbed.size() == 1) {
+            return !flowerbed.get(0) && numberToPlace == 1;
+        }
+
+        int count = 0;
+        for (int i=0; i<flowerbed.size(); i++) {
+            if (flowerbed.get(i)) continue;
+            if ((i == 0 || !flowerbed.get(i-1)) && (i == flowerbed.size()-1 || !flowerbed.get(i+1))) {
+                flowerbed.set(i, true);
+                count++;
+                if (count == numberToPlace) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(canPlaceFlowers2(Arrays.asList(true), 1));
     }
 }

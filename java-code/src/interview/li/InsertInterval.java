@@ -1,8 +1,6 @@
 package interview.li;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 1.
@@ -46,6 +44,8 @@ public class InsertInterval {
         int getTotalCoveredLength();
     }
 
+    // Solution 1:
+    // add: O(1). getLength: O(nlogn + n)
     public class MyInterval implements IntervalLinkedIn {
         List<int[]> list = new ArrayList<>();
 
@@ -72,6 +72,39 @@ public class InsertInterval {
                     totalLength += curr[1] - prev[1];
                 } else {
                     totalLength += curr[1] - curr[0];
+                }
+                prev = curr;
+            }
+            return totalLength;
+        }
+    }
+
+    // Solution 2: use TreeSet for sorted intervals
+    // add: O(logn). getLength: O(n)
+    public class MyInterval2 implements IntervalLinkedIn {
+        TreeSet<int[]> set = new TreeSet<>(new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0]; // sort by start point in ascending order
+            }
+        });
+
+        @Override
+        public void addInterval(int from, int to) {
+            set.add(new int[]{from, to});
+        }
+
+        @Override
+        public int getTotalCoveredLength() {
+            int totalLength = 0;
+            int[] prev = null;
+            Iterator<int[]> iterator = set.iterator();
+            while (iterator.hasNext()) {
+                int[] curr = iterator.next();
+                if (prev != null && curr[0] < prev[1]) { // curr start smaller than prev end, overlapping
+                    totalLength += curr[1] - prev[1];
+                } else {
+                    totalLength += curr[1] - curr[0]; // not overlapping with previous or previous is null
                 }
                 prev = curr;
             }

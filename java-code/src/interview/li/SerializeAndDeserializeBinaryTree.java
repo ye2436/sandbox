@@ -1,10 +1,7 @@
-package interview.bb;
-
-import interview.tb.EncodeAndDecodeStrings;
+package interview.li;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -28,47 +25,43 @@ import java.util.Queue;
  */
 public class SerializeAndDeserializeBinaryTree {
 
+    // use 2 null(#) to denote a leaf. iterative pre-order traversal
+
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
-        // level order traversal
+        if (root == null) return "";
         StringBuilder sb = new StringBuilder();
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        int lastNum = 1; // # of not null nodes from last level
-        int currNum = 0;
-        while (!queue.isEmpty() && (lastNum != 0 || currNum != 0)) {
-            TreeNode node = queue.poll();
-            if (node != null) {
-                lastNum--;
-                sb.append(node.val).append(",");
-                queue.offer(node.left);
-                queue.offer(node.right);
-                if (node.left != null) {
-                    currNum++;
-                }
-                if (node.right != null) {
-                    currNum++;
-                }
-            } else {
-                sb.append("#,");
-                queue.offer(null);
-                queue.offer(null);
-            }
-
-            if (lastNum == 0) {
-                lastNum = currNum;
-                currNum = 0;
-            }
-        }
-
+        helper(root, sb);
         return sb.toString();
+    }
+
+    public void helper(TreeNode node, StringBuilder sb) {
+        if (node == null) {
+            sb.append("#,");
+            return;
+        }
+        sb.append(node.val + ",");
+        helper(node.left, sb);
+        helper(node.right, sb);
     }
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
         if (data == null || data.length() == 0) return null;
-        String[] values = data.split(",");
-        return null;
+        Queue<String> vals = new LinkedList();
+        vals.addAll(Arrays.asList(data.split(",")));
+        return helper(vals);
+    }
+
+    public TreeNode helper(Queue<String> vals) {
+        String val = vals.poll();
+        if (val.equals("#")) {
+            return null;
+        }
+        TreeNode node = new TreeNode(Integer.valueOf(val));
+        node.left = helper(vals);
+        node.right = helper(vals);
+        return node;
     }
 
     public static void main(String[] args) {

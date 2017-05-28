@@ -2,6 +2,7 @@ package lc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * #155. Min Stack
@@ -22,40 +23,55 @@ import java.util.List;
  */
 public class MinStackImpl {
 
+    /**
+     * The question is ask to construct One stack. So I am using one stack.
+
+     The idea is to store the gap between the min value and the current value;
+
+     The problem for my solution is the cast. I have no idea to avoid the cast. Since the possible gap between the current value and the min value could be Integer.MAX_VALUE-Integer.MIN_VALUE;
+     */
     public static class MinStack {
 
-        List<Integer> stack;
-        List<Integer> minStack;
+        long min;
+        Stack<Long> stack;
 
         /** initialize your data structure here. */
         public MinStack() {
-            stack = new ArrayList<>();
-            minStack = new ArrayList<>();
+            stack = new Stack<>();
         }
 
         public void push(int x) {
-            stack.add(x);
-            if (minStack.isEmpty() || minStack.get(minStack.size()-1) >= x) {
-                minStack.add(x);
+            if (stack.isEmpty()) {
+                stack.push(0l);
+                min = x;
+            } else {
+                stack.push(x-min); // could be negative if x is the new min
+                min = Math.min(min, x);
             }
         }
 
         public void pop() {
-            int topElem = stack.get(stack.size()-1);
-            stack.remove(stack.size()-1);
-            if (!minStack.isEmpty() && minStack.get(minStack.size()-1) == topElem) {
-                minStack.remove(minStack.size()-1);
+            if (!stack.isEmpty()) {
+                long n = stack.pop();
+                if (n<0) {
+                    min = min-n; // update min if the current min is popped
+                }
             }
         }
 
         public int top() {
             if (stack.isEmpty()) return 0;
-            return stack.get(stack.size()-1);
+            long top = stack.peek();
+            if (top<0) {
+                return (int)min; // if top is negative, it is the min. (DO NOT add top with min, that's incorrect)
+            } else {
+                return (int)(top + min);
+            }
         }
 
         public int getMin() {
-            if(minStack.isEmpty()) return 0;
-            return minStack.get(minStack.size()-1);
+            if(stack.isEmpty()) return 0;
+            return (int) min;
         }
     }
 
