@@ -8,6 +8,35 @@ import java.util.PriorityQueue;
  * 253. Meeting Rooms II
  */
 public class MeetingRoomII {
+
+    // O(nlogn) + O(n) - Consider start and end times separately, use 2 arrays to store them, and sort in ascending order
+    // The point is when we see an end time, we know a meeting has ended and a room becomes available, but we don't care which room it is.
+    // Loop through start array, use another pointer to point to the next ending time
+    public int minMeetingRooms2(Interval[] intervals) {
+        if (intervals == null || intervals.length == 0) return 0;
+        int[] starts = new int[intervals.length];
+        int[] ends = new int[intervals.length];
+        for (int i=0; i<intervals.length; i++) {
+            starts[i] = intervals[i].start;
+            ends[i] = intervals[i].end;
+        }
+        Arrays.sort(starts);
+        Arrays.sort(ends);
+
+        int rooms = 0;
+        int j = 0; // end index
+        for (int i=0; i<starts.length; i++) {
+            if (starts[i] < ends[j]) { // if meeting starts time is less than the next end time, no meeting has ended yet, need a new room
+                rooms++;
+            } else { // one meeting has ended before this meeting starts, no need to add a new room. move to next end time
+                j++;
+            }
+        }
+        return rooms;
+    }
+
+
+    // O(nlogn) - merge non overlapping ones
     public int minMeetingRooms(Interval[] intervals) {
         if (intervals == null || intervals.length == 0) return 0;
 
