@@ -11,6 +11,9 @@ import java.util.Map;
 public class RomanToInteger {
 
     public static int romanToInt(String s) {
+        // validate if the string is a valid roman numeral
+        boolean valid = s.matches("^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$");
+
         int res = 0;
         Map<Character, Integer> map = new HashMap<>();
         map.put('I', 1);
