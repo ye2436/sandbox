@@ -1,4 +1,4 @@
-package interview.tb;
+package interview.am;
 
 import java.util.Arrays;
 

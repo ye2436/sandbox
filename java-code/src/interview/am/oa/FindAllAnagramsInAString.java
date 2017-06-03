@@ -27,6 +27,51 @@ import java.util.*;
  */
 public class FindAllAnagramsInAString {
 
+    public static List<Integer> practice (String s, String p) { // sliding window
+        if (s == null || s.length() < p.length()) return new ArrayList<>();
+        List<Integer> indices = new ArrayList<>();
+        Map<Character, Integer> freqMap = new HashMap<>();
+        for (char c : p.toCharArray()) {
+            if (freqMap.containsKey(c)) {
+                freqMap.put(c, freqMap.get(c) + 1);
+            } else {
+                freqMap.put(c, 1);
+            }
+        }
+        int count = p.length();
+        int l = 0;
+        int r = 0;
+
+        while(r < s.length()) {
+            char c = s.charAt(r);
+            if (freqMap.containsKey(c)) { // if c is in p
+                if (freqMap.get(c) > 0) {
+                    count--; // only count when remaining frequency is still > 0
+                }
+                freqMap.put(c, freqMap.get(c)-1);
+            }
+
+            if (count == 0) {
+                indices.add(l);
+            }
+
+            if (r - l + 1 == p.length()) {
+                char o = s.charAt(l);
+                if (freqMap.containsKey(o)) {
+                    freqMap.put(o, freqMap.get(o)+1);
+                    if (freqMap.get(o) > 0) {
+                        count++;
+                    }
+                }
+                l++;
+            }
+
+            r++;
+        }
+
+        return indices;
+    }
+
     // Solution 1: sort the anagram, find all subString and sort, compare the two
     //             takes too long (TLE)
     public List<Integer> findAnagrams(String s, String p) {
@@ -94,5 +139,9 @@ public class FindAllAnagramsInAString {
         }
 
         return indices;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(practice("cbaebabacd","abc"));
     }
 }

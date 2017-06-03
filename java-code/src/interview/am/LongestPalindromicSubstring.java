@@ -1,4 +1,4 @@
-package lc;
+package interview.am;
 
 /**
  * #5. Longest Palindromic Substring
@@ -47,6 +47,10 @@ public class LongestPalindromicSubstring {
         return res;
     }
 
+    // a center point can be a character (odd number palindrome)
+    //                    or bewteen 2 characters (even number)
+    // so for a string with length n, # of center points are a) n + b) n-1 = 2n-1
+    // we loop through the string and try to find, given a center point, what the longest possible palindrome could be
     // Time O(n^2), Space O(1)
     public static String solution_3(String s) { // expand from the center
         String res = "";
@@ -64,6 +68,10 @@ public class LongestPalindromicSubstring {
         return res;
     }
 
+    // use a (left, right) to represent center point.
+    // if in start, left = right, it means that the character at this index is the center point
+    // otherwise, the center point is between index l & r
+    // this function returns length of palindrome from this center point
     private static int expandAroundCenter(String s, int left, int right) {  // return the max length with a given center
         while (left>=0 && right<s.length() && s.charAt(left) == s.charAt(right)) {
             left--;

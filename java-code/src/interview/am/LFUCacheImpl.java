@@ -49,6 +49,7 @@ public class LFUCacheImpl {
 
             public Node(int frequency) {
                 this.frequency = frequency;
+                keys = new LinkedHashSet<>();
             }
         }
 
@@ -74,6 +75,7 @@ public class LFUCacheImpl {
         // if exists, similar to get(), update value, get the key in node and move it to next freq node
         // if not exists, check capacity (remove as needed), add to valueMap, add to list head,
         public void put(int key, int value) {
+            if (capacity == 0) return; // ***********important here
             if (valueMap.containsKey(key)) {
                 valueMap.put(key, value);
             } else {
