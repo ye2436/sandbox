@@ -20,6 +20,9 @@ import java.util.List;
  * ]
  */
 public class SubsetsII {
+
+    // Similar to Subsets, but we want to avoid generating subsets with duplicate numbers.
+    // We do that by first sorting the numbers array and then ignore the ones that are same as its successor.
     public static List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         if (nums == null || nums.length == 0) return res;
