@@ -54,6 +54,11 @@ public class WordLadder {
      * This algorithm is often used to find the shortest path from one vertex to another.
      */
 
+    // Starting from begin word, we can see this problem as a graph. Each vertex are 1 character away.
+    // We could search graph by using BFS. Each round, we search 1 ladder/level. For BFS, we usually use queue.
+    // And use a last level count with a curr level count to track levels.
+    // * Each word/vertex could have at most 25*L (L = word length) neighboring vertex, though many may not be in the wordList.
+    // * The ending condition is when we find a new neighboring word is the endWord.
     public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
         if (beginWord == null || beginWord.length() == 0 || endWord == null || endWord.length() == 0
                 || beginWord.length() != endWord.length()  || !wordList.contains(endWord)) return 0;
@@ -106,6 +111,14 @@ public class WordLadder {
     }
 
     // two-end BFS
+    // This could save some time. Why? Because the total # of nodes grow exponentially as the level goes deeper.
+    // By using bidirectional BFS, we iterate between 2 queues from 2 ends. We always choose the queue with fewer nodes.
+    // * The ending condition here is when our new neighboring node is in the other queue that is not currently being processed.
+    // Because checking if an element is in queue is not trivial, it takes linear time instead of constant.
+    // Using a hash set instead of a queue is a better idea. Since we do not care about the order of which neighboring nodes to be
+    // processed first, hash set works. But it should keep the nodes only on the same level. (unlike queue that has everything).
+    // We will use a next set to keep the nodes on the next level.
+    // * Also we need to keep a visited set, like usual BFS
     public static int ladderLength2(String beginWord, String endWord, List<String> wordList) {
         Set<String> dict = new HashSet<>(wordList);
         Set<String> beginSet = new HashSet<>();

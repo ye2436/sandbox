@@ -12,6 +12,50 @@ import java.util.Arrays;
  * return [3, 4].
  */
 public class SearchForARange {
+
+    // when searching for the left bound, take advantage of that the mid point is biased to the left -- m = (l+r)/2
+    // when searching for the right bound, let m = (l+r)/2 + 1. now we have a mid point that is biased to the right
+    // *finally we need to consider the case where target is not in nums. if target is larger than the largest num in nums,
+    // our bounds will be pushed to the right most index. if target is smaller, then our bounds are at the left most index.
+    // that is not our desired results. So before returning the bounds, we verify the number at both bounds is the target.
+    public static int[] searchRange3(int[] nums, int target) {
+        int lower = -1;
+        int upper = -1;
+        if (nums == null || nums.length == 0) return new int[]{lower,upper};
+
+        int ll = 0;
+        int lr = nums.length-1;
+        while (ll < lr) {
+            int m = (ll+lr)/2;
+            if (target <= nums[m]) {
+                lr = m;
+            } else {
+                ll = m+1;
+            }
+        }
+
+        int rl = 0;
+        int rr = nums.length-1;
+        while (rl < rr) {
+            int m = (rl+rr)/2 + 1;
+            if (nums[m] <= target) {
+                rl = m;
+            } else {
+                rr = m-1;
+            }
+        }
+
+        if (nums[ll] == target && nums[rr] == target ) {
+            lower = ll;
+            upper = rr;
+        }
+
+        return new int[] {lower, upper};
+    }
+
+
+
+
     public static int[] searchRange(int[] nums, int target) {
         int low = -1;
         int high = -1;
@@ -92,5 +136,6 @@ public class SearchForARange {
         int[] nums = {1,1,2,2,4,5,6};
         System.out.println(Arrays.toString(searchRange(nums,7)));
         System.out.println(Arrays.toString(searchRange2(nums,7)));
+        System.out.println(Arrays.toString(searchRange3(nums,7)));
     }
 }

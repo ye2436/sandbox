@@ -11,6 +11,13 @@ package interview.fb;
  */
 public class FirstBadVersion {
 
+    // Binary Search
+    // In this problem, we take the advantage of that the integer division is always leaning towards the smaller whole number.
+    // --- in binary search, mid point is biased to the left
+    // Therefore, the middle element is either the center point itself (odd count) or on the left of the center point (even count)
+    // So even if we keep the bad version ones when found, our result will always land on the left most ones.
+    // And the while loop will end when l=r, meaning that we are left with the last element.
+
     public int firstBadVersion2(int n) {
         int l = 0;
         int r = n;
