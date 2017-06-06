@@ -25,6 +25,7 @@ public class PermutationsII {
         return res;
     }
 
+    // when a number has the same value with its previous, we can use this number only if its previous was used
     private static void helper(int[] nums, boolean[] used, List<Integer> currList, List<List<Integer>> res) {
         if (currList.size() == nums.length) {
             res.add(new ArrayList<>(currList));

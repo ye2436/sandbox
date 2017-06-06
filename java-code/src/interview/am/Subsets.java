@@ -22,9 +22,7 @@ import java.util.List;
  */
 public class Subsets {
 
-
-
-    // non-recursive
+    // iterative
     // We start with an empty set. This is our smallest subset. And we expand from that.
     // Each time before we add new element, we make a copy of all existing sets.
     // Then we add the new element to the cloned sets, and they become new subsets.
