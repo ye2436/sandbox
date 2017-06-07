@@ -30,33 +30,41 @@ import java.util.Map;
 public class KDiffPairsInArray {
 
     // Solution 1 - Two Pointers - Time O(nlogn), Space O(1)
-    // First sort the array. Use two pointers to check diffs - i start from 0, (to avoid dups, it needs to check if next index is the same)
-    // another pointer j, start from 1, should be max(j, i+1)
+    // First sort the array. Use two pointers to check diffs. At any given time, we only need to move 1 pointer and keep the other unchanged.
+    // Since we are finding the diff, if diff(i,j) < k, we move j; if diff(i,j) >= k, we move i.
+    // Pointer i - range : [0,n-2]
+    // Pointer j - range : initially start at 1, and then [max(j, i+1), n-1]
     // * why keep j after i is updated? when nums[i] and nums[j] diff becomes larger than k, we move only i to the right, and keep j unchanged.
     // * why max(j,i+1)? when we move i, it can be moved multiple times in the case of dups, it may exceed j. we want to keep j on the right of i
+    // * we check dup at the end of each loop of i, so that the first of all dups will be taken, and the rest not.
     public static int findPairs(int[] nums, int k) {
         if (nums == null || nums.length == 0 || k<0) return 0;
         Arrays.sort(nums);
         int count = 0;
         int i=0;
         int j=1;
-        while (i<nums.length-1) {
-            j = Math.max(j, i+1);
-            while (j<nums.length && (long)(nums[j] - nums[i]) < k) { // move k through smaller diffs
-                j++;
+
+        for (; i<nums.length-1; i++) {
+
+            for (j = Math.max(j, i+1); j<nums.length; j++) {
+                if ((long)(nums[j] - nums[i]) >= k) break;
             }
 
-            // now the diff is either equal to or larger than k
-            // increment count if equal to k
+            // Now there are 3 possibilities
+            // (1) we found a diff that is equal to k
+            // (2) the diff is greater than k
+            // (3) we looped through all possible j and reached the end (j = nums.length)
+
+            // in situation (1), increment the count
             if (j< nums.length && (long)(nums[j] - nums[i]) == k) {
                 count++;
             }
 
-            // no matter equal to k or larger than k, we need to increment i because we have searched all possible from this round
-            while (i<nums.length-1 && nums[i] == nums[i+1]) { // go through dups
+            // no matter which scenario, we need to increment i because we have searched all possible from this round
+            // note that last possible round we check the very last 2 elements of the array. (including j)
+            while (i<nums.length-1 && nums[i] == nums[i+1]) { // skip dups
                 i++;
             }
-            i++;
         }
 
         return count;
@@ -95,6 +103,7 @@ public class KDiffPairsInArray {
 
 
     public static void main(String[] args) {
-        System.out.println(findPairs(new int[] {1,3,1,5,4}, 0));
+        System.out.println(findPairs(new int[] {1,3,1,5,4}, 0)); // expect 1
+        System.out.println(findPairs(new int[] {1,1,1,1,1}, 0)); // expect 1
     }
 }
