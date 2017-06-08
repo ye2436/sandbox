@@ -1,4 +1,4 @@
-package interview.am;
+package interview.am.lc;
 
 /**
  * 189. Rotate Array
