@@ -46,6 +46,11 @@ public class ImplementQueueUsingStacks {
     // Method 1 moves all the elements twice in enQueue operation, while method 2 (in deQueue operation)
     // moves the elements once and moves elements only if stack2 empty.
 
+
+    // Time: Amortized O(1)
+    // Each element only ever gets moved like that once, though, and only after we already spent time pushing it,
+    // so the overall amortized cost for each operation is O(1).
+
     public class MyQueue {
         Stack<Integer> stack1;
         Stack<Integer> stack2;
