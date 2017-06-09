@@ -17,6 +17,11 @@ package interview.am.other;
  */
 public class UniquePathsII {
 
+    // Similar as Unique Path I,
+    // dp[i][j] = obstacleGrid[i][j] == 1 ? 0 : dp[i][j-1] + dp[i-1][j]
+    // * To simplify, dp[j] = 0, if obstacleGrid[i][j] == 1
+    // otherwise, = dp[j] + dp[j-1] if (j>0)
+    //            = dp[j]           if (j=0)
     public static int uniquePathsWithObstacles(int[][] obstacleGrid) {
         if (obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0].length ==0) return 0;
         int m = obstacleGrid.length;

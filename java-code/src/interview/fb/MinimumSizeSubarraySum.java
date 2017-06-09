@@ -1,7 +1,7 @@
 package interview.fb;
 
 /**
- * 209. Minimum Size Subarray Sum Add to List
+ * 209. Minimum Size Subarray Sum
 
  Given an array of n positive integers and a positive integer s, find the minimal length of a contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
 
