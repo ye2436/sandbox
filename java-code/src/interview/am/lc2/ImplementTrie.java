@@ -1,4 +1,4 @@
-package interview.am.other;
+package interview.am.lc2;
 
 /**
  *  208. Implement Trie (Prefix Tree)

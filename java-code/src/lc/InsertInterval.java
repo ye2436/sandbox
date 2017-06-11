@@ -15,6 +15,11 @@ import java.util.List;
  * This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
  */
 public class InsertInterval {
+
+    // One pass solution
+    // First add all intervals before new interval to result list,
+    // then merge overlapping ones, and lastly add the rest.
+    // * why not do it in-place? because array list takes O(n) to delete, overall time won't be linear.
     public static List<Interval> insert2(List<Interval> intervals, Interval newInterval) {
         if (intervals == null || intervals.isEmpty()) return Arrays.asList(newInterval);
 

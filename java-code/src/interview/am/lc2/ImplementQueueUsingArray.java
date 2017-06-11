@@ -1,4 +1,4 @@
-package interview.am.other;
+package interview.am.lc2;
 
 /**
  * http://www.geeksforgeeks.org/queue-set-1introduction-and-array-implementation/

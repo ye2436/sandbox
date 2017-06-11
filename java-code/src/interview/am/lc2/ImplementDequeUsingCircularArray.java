@@ -1,6 +1,4 @@
-package interview.am.other;
-
-import java.lang.reflect.Array;
+package interview.am.lc2;
 
 /**
  * http://www.geeksforgeeks.org/implementation-deque-using-circular-array/
