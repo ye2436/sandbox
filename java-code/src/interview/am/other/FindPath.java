@@ -110,7 +110,7 @@ public class FindPath {
             if (start == end) return true;
             boolean[] visited = new boolean[n];
             Queue<Integer> queue = new LinkedList<>();
-            queue.offer(start);
+            queue.offer(start); // if multiple sources, enqueue all sources here
             visited[start] = true;
 
             while (!queue.isEmpty()) {
