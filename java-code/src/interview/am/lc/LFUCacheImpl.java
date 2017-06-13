@@ -185,4 +185,119 @@ public class LFUCacheImpl {
         cache.get(4);       // returns 4
     }
 
+    public class LFUCache2 {
+
+        class Node {
+            int freq;
+            LinkedHashSet<Integer> keys; // when we add key, it's always gonna be at the end.
+            Node prev;
+            Node next;
+            public Node(int freq) {
+                this.freq = freq;
+                keys = new LinkedHashSet<>();
+            }
+        }
+
+        Node head;
+        int capacity;
+        Map<Integer, Integer> valueMap;
+        Map<Integer, Node> freqMap;
+        public LFUCache2(int capacity) {
+            this.capacity = capacity;
+            valueMap = new HashMap<>();
+            freqMap = new HashMap<>();
+            head = new Node(0); // dummy head
+        }
+
+        public int get(int key) {
+            if (!valueMap.containsKey(key)) return -1;
+
+            incrementFreq(key); // increment freq for key, the key now is at the end of the list of the new freq node
+            return valueMap.get(key);
+        }
+
+        public void put(int key, int value) {
+            if (capacity == 0) return;
+            if (valueMap.containsKey(key)) {
+                incrementFreq(key); // increment freq for key
+            } else {
+                if (valueMap.size() == capacity) { // check capacity and delete old key as needed
+                    removeOldKey();
+                }
+
+                addKeyToHead(key); // add key to freq 1
+            }
+            valueMap.put(key, value);
+        }
+
+        private void incrementFreq(int key) {
+            // delete from curr node
+            Node curr = freqMap.get(key);
+            curr.keys.remove(key);
+            // add to new node
+            if (curr.next == null) {
+                Node next = new Node(curr.freq+1);
+                next.keys.add(key);
+                curr.next = next;
+                next.prev = curr;
+            } else if (curr.next.freq > curr.freq+1) {
+                Node next = new Node(curr.freq+1);
+                next.keys.add(key);
+                next.next = curr.next;
+                next.prev = curr;
+                curr.next.prev = next;
+                curr.next = next;
+            } else {
+                curr.next.keys.add(key);
+            }
+
+            freqMap.put(key, curr.next); // update freq node reference for key
+
+            if (curr.keys.size()==0) { // if curr node becomes empty, remove node
+                removeNode(curr);
+            }
+        }
+
+        private void removeNode(Node node) {
+            node.prev.next = node.next;
+            if (node.next != null) {
+                node.next.prev = node.prev;
+            }
+        }
+
+        private void removeOldKey() {
+            if (head.next == null) return;
+            Node node = head.next;
+            int oldKey = 0;
+            for (int key : node.keys) { // the first in keys is the oldest
+                oldKey = key;
+                break;
+            }
+            node.keys.remove(oldKey);
+            freqMap.remove(oldKey);
+            valueMap.remove(oldKey);
+            if (node.keys.size()==0) {
+                removeNode(node);
+            }
+        }
+
+        private void addKeyToHead(int key) {
+            if (head.next == null) {
+                Node node = new Node(1);
+                node.keys.add(key);
+                head.next = node;
+                node.prev = head;
+            } else if (head.next.freq == 1) {
+                head.next.keys.add(key);
+            } else {
+                Node node = new Node(1);
+                node.keys.add(key);
+                node.next = head.next;
+                node.prev = head;
+                head.next.prev = node;
+                head.next = node;
+            }
+            freqMap.put(key, head.next);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package interview.am.lc;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -121,8 +122,6 @@ public class LRUCacheImpl {
                 }
             }
         }
-
-
     }
 
     /**
@@ -133,12 +132,94 @@ public class LRUCacheImpl {
      */
 
     public static void main(String[] args) {
-        LRUCache cache = new LRUCache(2);
+        LRUCache2 cache = new LRUCache2(2);
         cache.put(1,1);
         cache.put(2,2);
         System.out.println(cache.get(1));
         cache.put(3, 3);
         System.out.println(cache.get(2));
+        cache.put(4, 4);
+        System.out.println(cache.get(1));
+        System.out.println(cache.get(3));
+        System.out.println(cache.get(4));
+    }
+
+    public static class LRUCache2 {
+
+        int capacity;
+        Map<Integer, ListNode> map; // key/value store
+        ListNode head; // doubly linked list head, the most recent key is stored right after it
+        ListNode tail; // doubly linked list tail, the least recent key is stored right before it
+
+        public LRUCache2(int capacity) {
+            this.capacity = capacity;
+            map = new HashMap<>();
+            head = new ListNode(0,0);
+            tail = new ListNode(0,0);
+            head.next = tail;
+            tail.prev = head;
+        }
+
+        // if not in map return -1
+        // if in, return value, and update list
+        public int get(int key) {
+            if (!map.containsKey(key)) return -1;
+            ListNode node = map.get(key);
+            removeNode(node); // remove node from its original position
+            addToHead(node); // add node to head
+            return node.val;
+        }
+
+        // if not in map, add to map & list, check capacity and delete if needed
+        // if in map, update value in map, update list
+        public void put(int key, int value) {
+            if (!map.containsKey(key)) {
+                ListNode node = new ListNode(key, value);
+                map.put(key, node); // add to map
+                addToHead(node); // add node to list head
+
+                if (map.size() > capacity) {
+                    popTail(); // delete from tail
+
+                    map.remove(tail.key); // remove from map
+                }
+            } else {
+                ListNode node = map.get(key);
+                node.val = value;
+
+                removeNode(node); // remove node from its original position
+                addToHead(node); // add node to head
+            }
+        }
+
+        // when removing node, make sure to update head & tail
+        private void removeNode(ListNode node) {
+            node.prev.next = node.next;
+            node.next.prev = node.prev;
+        }
+
+        private void addToHead(ListNode node) {
+            node.next = head.next;
+            node.prev = head;
+            head.next.prev = node;
+            head.next = node;
+        }
+
+        private void popTail() {
+            tail.prev.next = null;
+            tail = tail.prev;
+        }
+
+        class ListNode {
+            int key;
+            int val;
+            ListNode prev;
+            ListNode next;
+            public ListNode(int key, int val) {
+                this.key = key;
+                this.val = val;
+            }
+        }
     }
 }
 

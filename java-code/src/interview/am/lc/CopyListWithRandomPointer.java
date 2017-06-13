@@ -52,15 +52,16 @@ public class CopyListWithRandomPointer {
         }
 
         // 3. split
-        RandomListNode newHead = head.next;
         node = head;
+        RandomListNode newHead = head.next;
+        RandomListNode newCurr = newHead;
         while (node != null) {
-            RandomListNode newNode = node.next;
-            node.next = newHead.next;
+            node.next = newCurr.next;
             if (node.next != null) {
-                newHead.next = node.next.next;
+                newCurr.next = node.next.next;
             }
             node = node.next;
+            newCurr = newCurr.next;
         }
 
         return newHead;

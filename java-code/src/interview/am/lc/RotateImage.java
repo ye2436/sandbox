@@ -17,7 +17,7 @@ public class RotateImage {
         // divide into n/2 layers - outer loop i
         // inner loop j : [i, n-1-i]
         for (int i=0; i<n/2; i++) {
-            for (int j=i; j<=n-1-i; j++) {
+            for (int j=i; j<n-1-i; j++) {
                 // rotate 4 cells at a time.
                 // (i,j) -> (j, n-1-i) -> (n-1-i, n-1-j) -> (n-1-j, i) -> (i,j)
                 int temp = matrix[i][j];
