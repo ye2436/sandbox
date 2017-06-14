@@ -46,25 +46,19 @@ public class Subsets {
 
     // recursive
     public static List<List<Integer>> subsets2(int[] nums) {
-        return helper(nums, nums.length-1);
+        if (nums == null || nums.length == 0) return new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        helper(nums, 0, new ArrayList<>(), res);
+        return res;
     }
 
-    private static List<List<Integer>> helper(int[] nums, int index) {
-        if (index == -1) {
-            List<Integer> emptyList = new ArrayList<>();
-            List<List<Integer>> res = new ArrayList<>();
-            res.add(emptyList);
-            return res;
+    private static void helper(int[] nums, int index, List<Integer> currList, List<List<Integer>> res) {
+        res.add(new ArrayList<>(currList));
+        for (int i=index; i<nums.length; i++) {
+            currList.add(nums[i]);
+            helper(nums, i+1, currList, res);
+            currList.remove(currList.size()-1);
         }
-        List<List<Integer>> res = helper(nums, index-1); // get all subsets from last index
-        int size = res.size();
-        for (int i=0; i<size; i++) {
-            List<Integer> newSubset = new ArrayList<>(res.get(i));
-            newSubset.add(nums[index]);
-            res.add(newSubset);
-        }
-
-        return res;
     }
 
     public static void main(String[] args) {
