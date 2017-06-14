@@ -1,5 +1,8 @@
 package interview.am.lc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 242. Valid Anagram
 
@@ -23,7 +26,25 @@ public class ValidAnagram {
     // Although this will not work in unicode characters. In that case we could use either a map to store. Or just sort the strings
     public boolean isAnagram(String s, String t) {
         if (s.length()==0 && t.length()==0) return true;
-
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+            if (map.containsKey(c)) {
+                map.put(c, map.get(c)+1);
+            } else {
+                map.put(c, 1);
+            }
+        }
+        for (int i=0; i<t.length(); i++){
+            char c = t.charAt(i);
+            if (!map.containsKey(c)) {
+                return false;
+            }
+            map.put(c, map.get(c)-1);
+        }
+        for (char c : map.keySet()) {
+            if (map.get(c) != 0) return false;
+        }
 
         return true;
     }
