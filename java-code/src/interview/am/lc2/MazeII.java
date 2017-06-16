@@ -19,6 +19,40 @@ public class MazeII {
     // Similar to Maze I, we use iterative BFS, but with a priority queue. The priority queue compare by distance.
     // Since we need to keep track of distance, we will add a parameter to Point.
     // * instead of using a visited matrix, we keep a distance matrix.
+    public int shortestDistance_practice(int[][] maze, int[] start, int[] destination) {
+        if(maze == null || maze.length == 0 || maze[0].length == 0) return -1;
+        int m = maze.length;
+        int n = maze[0].length;
+        Integer[][] distance = new Integer[m][n];
+        int shortestDist = Integer.MAX_VALUE;
+        PriorityQueue<Point> minHeap = new PriorityQueue<>(m * n, new Comparator<Point>() {
+            @Override
+            public int compare(Point o1, Point o2) {
+                return o1.d - o2.d;
+            }
+        });
+        minHeap.offer(new Point(start[0], start[1], 0));
+        int[] dirs = new int[] {0, 1, 0, -1, 0};
+        while (!minHeap.isEmpty()) {
+            Point curr = minHeap.poll();
+            // smaller distance already exists
+            if (distance[curr.x][curr.y] != null && distance[curr.x][curr.y] <= curr.d) continue;
+
+            int xx = curr.x;
+            int yy = curr.y;
+            int dd = curr.d;
+            for (int i=0; i<dirs.length-1; i++) {
+                while (isValid(maze, xx + dirs[i], yy + dirs[i+1])) {
+                    xx += dirs[i];
+                    yy += dirs[i+1];
+                    dd ++;
+                }
+                minHeap.offer(new Point(xx, yy, dd));
+            }
+        }
+
+        return distance[destination[0]][destination[1]] == null ? -1 : distance[destination[0]][destination[1]];
+    }
 
     public int shortestDistance(int[][] maze, int[] start, int[] destination) {
         if (maze == null || maze.length == 0 || maze[0].length == 0) return -1;

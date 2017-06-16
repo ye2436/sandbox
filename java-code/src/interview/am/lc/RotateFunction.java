@@ -48,7 +48,7 @@ public class RotateFunction {
 
     // Further analyze F function
     // What's F(k) - F(k-1)? It's the sum of the entire array - n*A[n-k]
-    // so first initialize with F(0), then calculate F(1) ... F(k) using above formular
+    // so first initialize with F(0), then calculate F(1) ... F(k) using above formula
     public int maxRotateFunction_2(int[] A) {
         if (A == null || A.length == 0) return 0;
         int n = A.length;

@@ -39,31 +39,19 @@ public class KDiffPairsInArray {
     // * we check dup at the end of each loop of i, so that the first of all dups will be taken, and the rest not.
     public static int findPairs(int[] nums, int k) {
         if (nums == null || nums.length == 0 || k<0) return 0;
-        Arrays.sort(nums);
         int count = 0;
-        int i=0;
-        int j=1;
+        Arrays.sort(nums);
+        for (int i=0; i<nums.length-1; i++) {
+            if (i>0 && nums[i] == nums[i-1]) continue; // avoid dup for i
+            for (int j=i+1; j<nums.length; j++) {
+                if (j>i+1 && nums[j] == nums[j-1]) continue; // avoid dup for j
 
-        for (; i<nums.length-1; i++) {
-
-            for (j = Math.max(j, i+1); j<nums.length; j++) {
-                if ((long)(nums[j] - nums[i]) >= k) break;
-            }
-
-            // Now there are 3 possibilities
-            // (1) we found a diff that is equal to k
-            // (2) the diff is greater than k
-            // (3) we looped through all possible j and reached the end (j = nums.length)
-
-            // in situation (1), increment the count
-            if (j< nums.length && (long)(nums[j] - nums[i]) == k) {
-                count++;
-            }
-
-            // no matter which scenario, we need to increment i because we have searched all possible from this round
-            // note that last possible round we check the very last 2 elements of the array. (including j)
-            while (i<nums.length-1 && nums[i] == nums[i+1]) { // skip dups
-                i++;
+                if (nums[j] - nums[i] == k) {
+                    count++;
+                    break;
+                } else if (nums[j] - nums[i] > k) {
+                    break;
+                } // else continue
             }
         }
 

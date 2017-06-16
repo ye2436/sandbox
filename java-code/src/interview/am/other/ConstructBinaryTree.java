@@ -23,8 +23,8 @@ import java.util.*;
 
  You should return the following tree:
 
-        50
-       /  \
+         50
+        /  \
       20   80
      / \   / \
     15 17 19 16

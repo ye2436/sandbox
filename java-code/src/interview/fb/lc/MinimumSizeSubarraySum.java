@@ -1,4 +1,4 @@
-package interview.fb;
+package interview.fb.lc;
 
 /**
  * 209. Minimum Size Subarray Sum

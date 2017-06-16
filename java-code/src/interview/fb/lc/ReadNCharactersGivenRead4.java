@@ -1,4 +1,4 @@
-package interview.fb;
+package interview.fb.lc;
 
 /**
  * 157. Read N Characters Given Read4

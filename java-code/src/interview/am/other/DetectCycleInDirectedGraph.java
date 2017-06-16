@@ -110,6 +110,7 @@ public class DetectCycleInDirectedGraph {
     }
 
 
+/*
     /////////// helper
     public static Graph buildGraph(List<Event> events) {
         Map<Integer, List<Integer>> adjMap = new HashMap<>();
@@ -135,6 +136,7 @@ public class DetectCycleInDirectedGraph {
         }
         return new Graph(adj);
     }
+*/
 
 
     static class Graph {
@@ -160,11 +162,51 @@ public class DetectCycleInDirectedGraph {
     public static void main(String[] args) {
         Event e1 = new Event("A", "B");
         Event e2 = new Event("B", "C");
-        Event e3 = new Event("C", "A");
-        Graph graph = buildGraph(Arrays.asList(e1, e2, e3));
+        Event e3 = new Event("C", "D");
+        /*Graph graph = buildGraph(Arrays.asList(e1, e2, e3));
         detectCycle2(graph);
         while (!cycle.empty()) {
             System.out.println(cycle.pop());
+        }*/
+
+        System.out.println(hasCycle(Arrays.asList(e1, e2, e3)));
+    }
+
+    // use map to mimic adjacency list instead of converting to graph
+    public static boolean hasCycle(List<Event> events) {
+        // a user only loses will not have an entry in map
+        Map<String, List<String>> map = new HashMap<>(); // represents v -> neighbors
+        for (Event event : events) {
+            if (!map.containsKey(event.winner)) {
+                map.put(event.winner, new ArrayList<>());
+            }
+            map.get(event.winner).add(event.loser);
         }
+        Set<String> visited = new HashSet<>();
+        Set<String> inStack = new HashSet<>();
+        for (String user : map.keySet()) {
+            if (isCyclic(map, user, visited, inStack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isCyclic(Map<String, List<String>> map, String curr, Set<String> visited, Set<String> inStack) {
+        if (!visited.contains(curr)) {
+            visited.add(curr);
+            inStack.add(curr);
+            if (map.containsKey(curr)) {
+                for (String neighbor : map.get(curr)) {
+                    if (!visited.contains(neighbor) && isCyclic(map, neighbor, visited, inStack)) {
+                        return true;
+                    } else if (inStack.contains(neighbor)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        inStack.remove(curr);
+        return false;
     }
 }

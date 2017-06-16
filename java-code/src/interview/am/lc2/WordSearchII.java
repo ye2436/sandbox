@@ -1,9 +1,7 @@
 package interview.am.lc2;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.charset.CharacterCodingException;
+import java.util.*;
 
 /**
  * 212. Word Search II
@@ -142,6 +140,60 @@ public class WordSearchII {
         }
     }
 
+    public List<String> findWords3(char[][] board, String[] words) {
+        if (board == null) return new ArrayList<>();
+        TrieNode2 root = buildTrie2(words);
+        Set<String> foundWords = new HashSet<>();
+        boolean[][] used = new boolean[board.length][board[0].length];
+        for (int i=0; i<board.length; i++) {
+            for (int j=0; j<board[0].length; j++) {
+                helper3(board, i, j, used, root, new StringBuilder(), foundWords);
+            }
+        }
+        return new ArrayList<>(foundWords);
+    }
+    public void helper3(char[][] board, int i, int j, boolean[][] used, TrieNode2 node, StringBuilder sb, Set<String> res) {
+        if (node.isLeaf) {
+            res.add(sb.toString());
+        }
+        if (i<0 || i>=board.length || j<0 || j>=board[0].length || used[i][j] || !node.children.containsKey(board[i][j])) return;
+
+        TrieNode2 next = node.children.get(board[i][j]);
+        used[i][j] = true;
+        sb.append(board[i][j]);
+        helper3(board, i-1, j, used, next, sb, res);
+        helper3(board, i+1, j, used, next, sb, res);
+        helper3(board, i, j-1, used, next, sb, res);
+        helper3(board, i, j+1, used, next, sb, res);
+        sb.deleteCharAt(sb.length()-1);
+        used[i][j] = false;
+
+    }
+
+    public TrieNode2 buildTrie2(String[] words) {
+        TrieNode2 root = new TrieNode2();
+        for (String word : words) {
+            TrieNode2 curr = root;
+            char[] chars = word.toCharArray();
+            for (char c : chars) {
+                if (!curr.children.containsKey(c)) {
+                    curr.children.put(c, new TrieNode2());
+                }
+                curr = curr.children.get(c);
+            }
+            curr.isLeaf = true;
+        }
+        return root;
+    }
+
+    class TrieNode2 {
+        Map<Character, TrieNode2> children;
+        boolean isLeaf;
+        public TrieNode2() {
+            children = new HashMap<>();
+        }
+    }
+
 
     public static void main(String[] args) {
         char[][] board = new char[][] {
@@ -153,11 +205,13 @@ public class WordSearchII {
         System.out.println(findWords(board, new String[]{"oath","pea","eat","rain"}));
         WordSearchII solution = new WordSearchII();
         System.out.println(solution.findWords2(board, new String[]{"oath","pea","eat","rain"}));
+        System.out.println(solution.findWords3(board, new String[]{"oath","pea","eat","rain"}));
 
         board = new char[][] {
                 {'a','b'},
                 {'a','a'},
         };
         System.out.println(solution.findWords2(board, new String[]{"aba","baa","bab","aaab","aaa","aaaa","aaba"}));
+        System.out.println(solution.findWords3(board, new String[]{"aba","baa","bab","aaab","aaa","aaaa","aaba"}));
     }
 }

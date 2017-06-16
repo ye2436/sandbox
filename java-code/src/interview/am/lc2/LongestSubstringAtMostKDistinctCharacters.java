@@ -16,7 +16,7 @@ public class LongestSubstringAtMostKDistinctCharacters {
 
     // sliding window
     // As we go through the characters, we keep track of the counts of each character.
-    // And use another variable (num) to indicate number of unqiue characters inside the window.
+    // And use another variable (num) to indicate number of unique characters inside the window.
     // whenever num becomes larger than k, we will move the left window, decrease the count for this character.
     // num goes down by 1 if the count becomes 0.
     public static int lengthOfLongestSubstringKDistinct(String s, int k) {

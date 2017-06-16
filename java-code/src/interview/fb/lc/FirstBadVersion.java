@@ -1,4 +1,4 @@
-package interview.fb;
+package interview.fb.lc;
 
 /**
  * 278. First Bad Version Add to List

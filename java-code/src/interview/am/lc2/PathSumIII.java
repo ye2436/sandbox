@@ -37,7 +37,7 @@ public class PathSumIII {
 
     // Solution 1:
     // brute force recursive. pathSum(root) = pathSum(left)+pathSum(right) + number of paths starting from root.
-    // number of paths starting from root = PathSumII(but ending point doesn't have to be leaf, and we need count only)
+    // number of paths starting from root = PathSumII(but ending point doesn't have to be leaf, and we only need count )
     // Time Complexity: each node are accessed by average logn times. So O(nlogn)
     public int pathSum(TreeNode root, int sum) {
         if(root == null)

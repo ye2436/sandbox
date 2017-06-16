@@ -1,4 +1,4 @@
-package interview.fb;
+package interview.fb.lc;
 
 /**
  * 303. Range Sum Query - Immutable

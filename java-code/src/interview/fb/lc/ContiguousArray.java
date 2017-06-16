@@ -1,4 +1,4 @@
-package interview.fb;
+package interview.fb.lc;
 
 import java.util.HashMap;
 import java.util.Map;

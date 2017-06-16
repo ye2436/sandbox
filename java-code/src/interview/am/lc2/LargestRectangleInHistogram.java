@@ -41,7 +41,7 @@ public class LargestRectangleInHistogram {
     // * So here we want to have a data structure to indicate monotonically increasing height. Since we only compare when right side window is closed, we use stack.
     // We only store the bars with monotonically increasing order. When it's broken, we pop from stack until the order is restored.
     // The popped bars are the ones with both side windows complete, we can calculate their width by
-    // idx of current smaller bar to add - idx of stack.peek() -1
+    // idx of current smaller bar to add ---- idx of stack.peek()-1
     // * To initialize stack, we can add a -1 to indicate the left boundary
     // * When all bars are added, what's left in the stack are all in monotonically increasing order. These are the ones with the right most bar as the right window
     //   calculate their width by idx of last bar - idx of stack.pop()
@@ -53,7 +53,7 @@ public class LargestRectangleInHistogram {
         for (int i=0; i<heights.length; i++) {
             while (stack.peek()>=0 && heights[stack.peek()] >= heights[i]) {
                 int height = heights[stack.pop()];
-                maxArea = Math.max(maxArea, height * (i-stack.peek()-1));
+                maxArea = Math.max(maxArea, height * (i-stack.peek()-1)); // between [stack.peek+1, i-1]
             }
             stack.push(i);
         }
@@ -62,7 +62,7 @@ public class LargestRectangleInHistogram {
         int lastIdx = heights.length-1;
         while (stack.peek()>=0) {
             int height = heights[stack.pop()];
-            maxArea = Math.max(maxArea, height * (lastIdx - stack.peek()));
+            maxArea = Math.max(maxArea, height * (lastIdx - stack.peek()));// between[stack.peek+1, lastIdx]
         }
         return maxArea;
     }

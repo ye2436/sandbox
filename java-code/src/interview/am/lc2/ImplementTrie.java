@@ -1,5 +1,8 @@
 package interview.am.lc2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *  208. Implement Trie (Prefix Tree)
  *  Implement a trie with insert, search, and startsWith methods.
@@ -73,6 +76,60 @@ public class ImplementTrie {
         }
     }
 
+    // Implementation with hash map
+    public static class Trie2 {
+        TrieNode root;
+
+        /** Initialize your data structure here. */
+        public Trie2() {
+            root = new TrieNode();
+        }
+
+        /** Inserts a word into the trie. */
+        public void insert(String word) {
+            TrieNode curr = root;
+            char[] chars = word.toCharArray();
+            for (char c : chars) {
+                if (!curr.children.containsKey(c)) {
+                    curr.children.put(c, new TrieNode());
+                }
+                curr = curr.children.get(c);
+            }
+            curr.isLeaf = true;
+        }
+
+        /** Returns if the word is in the trie. */
+        public boolean search(String word) {
+            char[] chars = word.toCharArray();
+            TrieNode curr = root;
+            for (char c : chars) {
+                if (!curr.children.containsKey(c)) return false;
+                curr = curr.children.get(c);
+            }
+            return curr.isLeaf;
+        }
+
+        /** Returns if there is any word in the trie that starts with the given prefix. */
+        public boolean startsWith(String prefix) {
+            char[] chars = prefix.toCharArray();
+            TrieNode curr = root;
+            for (char c : chars) {
+                if (!curr.children.containsKey(c)) return false;
+                curr = curr.children.get(c);
+            }
+            return true;
+        }
+
+        class TrieNode {
+            // use map to suit utf-8 characters
+            Map<Character, TrieNode> children;
+            boolean isLeaf; // true if the node represents end of a word
+            public TrieNode() {
+                children = new HashMap<>();
+            }
+        }
+    }
+
     /**
      * Your Trie object will be instantiated and called as such:
      * Trie obj = new Trie();
@@ -82,7 +139,7 @@ public class ImplementTrie {
      */
 
     public static void main(String[] args) {
-        Trie obj = new Trie();
+        Trie2 obj = new Trie2();
         obj.insert("abc");
         System.out.println(obj.search("abc"));
         System.out.println(obj.search("ab"));
@@ -90,7 +147,7 @@ public class ImplementTrie {
         System.out.println(obj.search("ab"));
         System.out.println("######");
 
-        obj = new Trie();
+        obj = new Trie2();
         obj.insert("ab");
         System.out.println(obj.search("abc")); // F
         System.out.println(obj.search("ab")); // T
