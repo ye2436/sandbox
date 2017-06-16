@@ -48,7 +48,25 @@ public class SubsetsII {
         return res;
     }
 
+    public static List<List<Integer>> subsetsWithDup2(int[] nums) {
+        if (nums == null || nums.length == 0) return null;
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(nums);
+        helper(nums, 0, new ArrayList<>(), res);
+        return res;
+    }
+
+    private static void helper(int[] nums, int index, List<Integer> currList, List<List<Integer>> res) {
+        res.add(new ArrayList<>(currList));
+        for (int i=index; i<nums.length; i++) {
+            if (i>index && nums[i] == nums[i-1]) continue;
+            currList.add(nums[i]);
+            helper(nums, i+1, currList, res);
+            currList.remove(currList.size()-1);
+        }
+    }
     public static void main(String[] args) {
-            System.out.println(subsetsWithDup(new int[]{2,2,2}));
+        System.out.println(subsetsWithDup(new int[]{2,2,2}));
+        System.out.println(subsetsWithDup2(new int[]{2,2,2}));
     }
 }

@@ -31,22 +31,11 @@ public class GrayCode {
     // then mirror them, replace 0 with 1 to the highest bit. now we have our other half
     public List<Integer> grayCode_2(int n) {
         List<Integer> res = new ArrayList<Integer>();
-        if(n<0)
-            return res;
-        if(n==0)
-        {
-            res.add(0);
-            return res;
-        }
         res.add(0);
-        res.add(1);
-        for(int i=2;i<=n;i++)
-        {
-            int size = res.size();
-            for(int j=size-1;j>=0;j--)
-            {
-                res.add(res.get(j)+(1<<(i-1)));
-            }
+        for(int i=0;i<n;i++){
+            int size=res.size();
+            for(int k=size-1;k>=0;k--)
+                res.add(res.get(k) | 1<<i);
         }
         return res;
     }
@@ -75,6 +64,7 @@ public class GrayCode {
     }
 
     public static void main(String[] args) {
-        System.out.println(grayCode(0));
+        System.out.println(grayCode(2));
+        System.out.println(Integer.parseInt("10", 2));
     }
 }
