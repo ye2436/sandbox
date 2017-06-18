@@ -108,6 +108,31 @@ public class BinaryTreeVerticalOrderTraversal {
         return res;
     }
 
+    int min = 0;
+    int max = 0;
+    public List<List<Integer>> verticalOrder_dfs(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        dfs(root, 0, map);
+        for (int i=min; i<=max; i++) {
+            res.add(map.get(i));
+        }
+        return res;
+    }
+
+    private void dfs(TreeNode node, int col, Map<Integer, List<Integer>> map) { // map: col -> list of node vals
+        if(node == null) return;
+        if (!map.containsKey(col)) {
+            map.put(col, new ArrayList<>());
+            min = Math.min(min, col);
+            max = Math.max(max, col);
+        }
+        map.get(col).add(node.val);
+        dfs(node.left, col-1, map);
+        dfs(node.right, col-2, map);
+    }
+
     private static class TreeNode {
         int val;
         TreeNode left;

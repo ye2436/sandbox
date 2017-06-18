@@ -48,6 +48,21 @@ public class FirstBadVersion {
         return l;
     }
 
+    public int firstBadVersion_p(int n) {
+        if (n<=0) return 0;
+        int l = 1;
+        int r = n;
+        while (l<=r) {
+            int m = (l+r)/2;
+            if (isBadVersion(m)) {
+                r = m-1;
+            } else {
+                l = m+1;
+            }
+        }
+        return l;
+    }
+
 
     /* The isBadVersion API is defined in the parent class VersionControl.
       boolean isBadVersion(int version); */

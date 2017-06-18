@@ -1,4 +1,4 @@
-package interview.fb;
+package interview.fb.lc;
 
 /**
  * Created by yechen on 5/28/17.
