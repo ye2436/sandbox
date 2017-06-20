@@ -94,7 +94,8 @@ public class RegularExpressionMatching {
         boolean [][] dp = new boolean[s.length()+1][p.length()+1];
         //init:
         dp[0][0] = true;
-        for (int j=0; j<p.length(); j++) { // starting from 1???
+        for (int j=0; j<p.length(); j++) {
+            // remove 2 characters from pattern and then matching. (?* counts 0 time)
             if (p.charAt(j) == '*' && dp[0][j-1]) {
                 dp[0][j+1] = true;
             }

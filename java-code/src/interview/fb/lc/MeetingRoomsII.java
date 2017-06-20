@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 /**
  * 253. Meeting Rooms II
  */
-public class MeetingRoomII {
+public class MeetingRoomsII {
 
     // O(nlogn) + O(n) - Consider start and end times separately, use 2 arrays to store them, and sort in ascending order
     // The point is when we see an end time, we know a meeting has ended and a room becomes available, but we don't care which room it is.
@@ -134,7 +134,7 @@ public class MeetingRoomII {
         return minHeap.size();
     }
 
-    public class Interval {
+    private class Interval {
         int start;
         int end;
         Interval() { start = 0; end = 0; }

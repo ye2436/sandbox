@@ -39,6 +39,12 @@ public class SortColors {
     }
 
     // two pointers
+    // One for the last index of 0s so far, and one for the last index of 1s so far.
+    // Use i to iterate through nums, where i is the current index (also the end of the processed nums)
+    // The last index of the processed would always be 2 unless there is no 2 at all.
+    // in that case, idx1 or idx0 (if no 1) would be the same as i.
+    // * This is kind of like setting the third max -- always set the 3rd max first, then 2nd max, and the max
+    //   whereas here, we set 2, 1, and then 0.
     public static void sortColors2(int[] nums) {
         if (nums == null || nums.length == 0) return;
         int idx0 = 0;

@@ -17,6 +17,13 @@ import java.util.*;
  */
 public class RemoveInvalidParentheses {
 
+    // DFS Solution.  This solution skips a lot of impossible candidate strings.
+    //
+    public static List<String> removeInvalidParentheses2(String s) {
+        List<String> res = new ArrayList<>();
+        return res;
+    }
+
     // BFS Solution
     // Use BFS to find if a string is valid, remove 1 left/right paren in each round (level).
     // With BFS, we are guaranteed to have removed min numbers of invalid parens when we found the valid string (need all possible results from that level)
@@ -24,7 +31,7 @@ public class RemoveInvalidParentheses {
     //   Add intermediate result into the queue1(that indicates 1 removal is done).
     // * When to end? When a valid string is found. We add it to res, and finish this level, add all other valid ones.
     public static List<String> removeInvalidParentheses(String s) {
-        if (s == null || s.length() == 0) return new ArrayList<>();
+        if (s == null) return new ArrayList<>();
         List<String> res = new ArrayList<>();
         Queue<String> queue = new LinkedList<>();
         Set<String> visited = new HashSet<>();
